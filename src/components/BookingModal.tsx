@@ -125,7 +125,7 @@ export default function BookingModal() {
             <iframe
               src={content.scheduler.embedUrl}
               title={content.scheduler.title}
-              className="h-full w-full border-0 bg-white"
+              className="bg-white"
               allow="camera; microphone; fullscreen; payment"
             />
           ) : null}

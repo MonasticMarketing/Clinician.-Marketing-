@@ -176,7 +176,9 @@
 
 .booking-dialog {
   margin: auto; /* centres in both axes inside the top layer */
-  max-width: min(42rem, calc(100vw - 2rem));
+  /* Wide enough that the scheduler uses its roomier date-and-time
+     layout rather than the cramped narrow one. */
+  max-width: min(58rem, calc(100vw - 2rem));
   width: 100%;
   max-height: calc(100dvh - 2rem);
   padding: 0;
@@ -198,7 +200,11 @@
 .booking-panel {
   display: flex;
   flex-direction: column;
-  max-height: calc(100dvh - 2rem);
+  /* A *definite* height, not max-height. A flex column whose own height is
+     indefinite gives its children indefinite heights too, so the iframe's
+     height:100% could not resolve and it collapsed to the 150px HTML
+     default inside a tall white box. */
+  height: min(56rem, calc(100dvh - 2rem));
   overflow: hidden;
   border-radius: 1rem;
   border: 1px solid var(--hairline-strong);
@@ -210,13 +216,23 @@
   box-shadow: 0 30px 80px -20px rgb(0 0 0 / 0.75);
 }
 
-/* The scheduler is a third-party iframe of unknown height, so give it a
-   generous viewport-relative box and let it scroll internally. */
+/* The scheduler is a third-party iframe of unknown height. Give it every
+   pixel left over between the header and footer and let it scroll
+   internally. min-height:0 is required or the flex item refuses to shrink
+   below its content. */
 .booking-frame {
   flex: 1 1 auto;
-  min-height: min(34rem, 60dvh);
-  overflow: hidden;
+  min-height: 0;
+  display: flex;
   background: #fff;
+}
+
+.booking-frame > iframe {
+  flex: 1 1 auto;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
 }
 
 @keyframes booking-in {
