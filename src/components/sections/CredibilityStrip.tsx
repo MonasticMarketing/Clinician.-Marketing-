@@ -14,24 +14,27 @@ export default function CredibilityStrip() {
           {credibility.heading}
         </h2>
 
-        <ul className="grid gap-x-10 gap-y-9 sm:grid-cols-2 lg:grid-cols-4">
+        {/* A description list rather than headings: these are term and
+            definition pairs, not document sections, and four more headings
+            here skews the page's heading-to-text ratio for no benefit. */}
+        <dl className="grid gap-x-10 gap-y-9 sm:grid-cols-2 lg:grid-cols-4">
           {credibility.items.map((item, index) => (
-            <li key={item.title} className="relative">
+            <div key={item.title} className="relative">
               <span
                 aria-hidden="true"
                 className="font-mono text-[0.7rem] tracking-[0.18em] text-[var(--glow)]"
               >
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <h3 className="mt-3 text-[0.95rem] font-semibold text-[var(--white)]">
+              <dt className="mt-3 text-[0.95rem] font-semibold text-[var(--white)]">
                 {item.title}
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">
+              </dt>
+              <dd className="mt-2 text-sm leading-relaxed text-[var(--muted)]">
                 {item.body}
-              </p>
-            </li>
+              </dd>
+            </div>
           ))}
-        </ul>
+        </dl>
       </div>
     </section>
   );

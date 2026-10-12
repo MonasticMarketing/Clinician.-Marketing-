@@ -138,6 +138,7 @@ export default function BookingModal() {
             className="text-[var(--glow)] underline-offset-4 hover:underline"
           >
             {content.brand.phone}
+            <span className="sr-only"> (call us instead of booking)</span>
           </a>
           {" · "}
           <a
@@ -145,6 +146,7 @@ export default function BookingModal() {
             className="text-[var(--glow)] underline-offset-4 hover:underline"
           >
             {content.brand.email}
+            <span className="sr-only"> (email us instead of booking)</span>
           </a>
         </p>
       </div>

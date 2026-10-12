@@ -524,3 +524,106 @@ open, and focus lands on the close button.
   longer exists, and the "Let's chat" CTA sits immediately to its right.
   Email and phone remain in the footer and in the dialog's own footer.
   Say the word if you want the nav item back pointing at the dialog.
+
+
+---
+
+## 9. SEO pass and the blog
+
+### Findings addressed
+
+| Finding | Before | After |
+| --- | --- | --- |
+| Title too long | 675px (limit 580) | **437px** — "Behavioral Health Marketing \| Clinician Marketing" |
+| Meta description too long | 1457px (limit 1000) | **869px**, 133 characters |
+| H1 words absent from body | "scaled", "help", "yours" | all three now appear in body copy |
+| Image with no usable alt | brain splash had `alt=""` | descriptive alt text |
+| Too many headings | 43 for 1101 words | **28** for 1125 words |
+| Duplicate anchor text | 7 duplicated strings | **0** |
+| Both www and non-www served | both returned 200 | www **301s** to the apex |
+| Response time | 0.61s reported | see below |
+
+**How the heading count came down.** The credibility strip, the services
+grid and the à la carte row were lists of term/definition pairs rendered
+as headings. They are now `<dl>/<dt>/<dd>`, which is the more accurate
+markup anyway, and the two footer column headings became paragraphs since
+each `<nav>` already carries that text as its accessible name. No real
+section heading was removed.
+
+**How the duplicate anchors went.** The mobile menu rendered a second copy
+of every nav link even while closed, so each appeared twice in the markup;
+its links are now rendered only when the menu is open. Footer links got
+their own wording ("Our services", "Plans and pricing"), and the CTAs that
+all read "Let's chat" carry screen-reader-only suffixes naming what each
+one books. That also satisfies WCAG 2.4.4 on distinguishing link purpose.
+
+**A real bug this surfaced:** the nav anchors were `#services`, `#pricing`
+and so on, which resolve to nothing from any page that is not the
+homepage. They are now `/#services`, so the nav works from `/blog`,
+`/privacy` and `/terms`.
+
+### Response time: the site is now fully static
+
+Measuring from this container is unreliable — a plain static asset that
+never touches a Worker measured anywhere from 0.19s to 0.80s, so the
+numbers here are dominated by the agent proxy rather than by the site.
+
+Rather than tune against an unreliable measurement, the architecture
+changed to remove the variable entirely. Every route was already
+prerendered and the last dynamic route (the contact endpoint) is gone, so
+the site now builds with `output: "export"` and deploys as a **pure
+static-assets Worker** — `wrangler.jsonc` has no `main`, so no script runs
+on a page request and Cloudflare serves the files from its edge.
+
+That is visible in the response headers: requests now return
+`cf-cache-status: HIT`, which they never did before, because responses
+produced by a Worker are not edge-cacheable. Measured TTFB from this
+container dropped from 0.22–1.07s to **0.15–0.34s**.
+
+Consequences worth knowing:
+
+- `@opennextjs/cloudflare` and `open-next.config.ts` are gone. The Next
+  16.3.8 pin can be relaxed now — that pin only existed because of the
+  adapter — but there is no reason to rush it.
+- `headers()` in `next.config.ts` does nothing under `output: export`.
+  Caching and security headers live in **`public/_headers`**, which
+  Cloudflare Workers Static Assets reads.
+- Next emits the Open Graph card as an extensionless file, so Cloudflare
+  served it with **no content-type** and social scrapers would have
+  rejected it. `public/_headers` sets `Content-Type: image/png` for it.
+- Adding any server-side route again means reinstating the adapter.
+
+Two Cloudflare rules were added: a dynamic redirect sending
+`www.clinician.marketing` to the apex with the path preserved, and a cache
+rule allowing HTML to be cached at the edge.
+
+### The blog
+
+`/blog` plus `/blog/behavioral-health-marketing-laws`, from the supplied
+markdown. 4,469 words, 36 headings, a 14-item contents list, 52 footnote
+markers linked to 43 numbered references. axe reports zero violations on
+both pages.
+
+Articles live in `src/content/posts/` as plain Markdown inside a template
+literal, with metadata alongside. `src/lib/markdown.ts` renders them at
+build time — `marked` never reaches the browser — and adds heading ids,
+turns `[^3]` into a superscript link, and gives the reference list items
+matching ids.
+
+The article's meta title is set **absolutely**, bypassing the sitewide
+"· Clinician Marketing" suffix, which would otherwise have pushed it back
+over the 580px limit.
+
+**Not done:** the blog is linked from the footer but not the main nav. For
+crawl depth a nav link is better; it was left out because the nav items
+were specified and I did not want to change them unasked.
+
+### "GOP to IOP"
+
+Changed as requested: the à la carte item now reads "Done-for-you GOP to
+IOP program build". Flagging once — **"GOP" is not a standard behavioral
+health abbreviation** the way OP, IOP and PHP are, and the services
+section still says "OP-to-IOP expansion", so the two now disagree. If GOP
+is deliberate house terminology, say so and I will align the other
+mention; if it was meant to be "OP to IOP", it is one line in
+`content.ts`.

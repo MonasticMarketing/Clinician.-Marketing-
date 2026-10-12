@@ -46,10 +46,9 @@ export const content = {
   },
 
   meta: {
-    title:
-      "Clinician Marketing — Behavioral Health Marketing Built by Practice Owners",
+    title: "Behavioral Health Marketing | Clinician Marketing",
     description:
-      "Behavioral health marketing and business consulting from operators who have owned therapy practices and treatment centers. Therapist marketing, psychiatry practice marketing, IOP and PHP marketing, SEO and ads with guarantees.",
+      "Behavioral health marketing from operators who have owned and scaled practices and treatment centers. SEO, ads and CRM, done for you.",
     keywords: [
       "behavioral health marketing",
       "therapist marketing",
@@ -68,10 +67,10 @@ export const content = {
 
   nav: {
     items: [
-      { label: "Services", href: "#services" },
-      { label: "Who We Serve", href: "#who-we-serve" },
-      { label: "Pricing", href: "#pricing" },
-      { label: "About", href: "#about" },
+      { label: "Services", href: "/#services" },
+      { label: "Who We Serve", href: "/#who-we-serve" },
+      { label: "Pricing", href: "/#pricing" },
+      { label: "About", href: "/#about" },
     ] satisfies NavItem[],
     cta: { label: "Let's chat", href: SCHEDULER_URL },
   },
@@ -83,7 +82,7 @@ export const content = {
     subhead:
       "Clinician Marketing is behavioral health marketing and business consulting from operators who have owned therapy practices and licensed treatment facilities. Not a generalist agency learning your field on your budget.",
     primaryCta: { label: "Let's chat", href: SCHEDULER_URL },
-    secondaryCta: { label: "See Plans", href: "#pricing" },
+    secondaryCta: { label: "See Plans", href: "/#pricing" },
     /** Monospace labels floating near the point cloud. Keep to three or four. */
     telemetry: [
       { value: "4.25x", label: "ad spend return guarantee" },
@@ -98,11 +97,11 @@ export const content = {
     items: [
       {
         title: "We have owned the practices",
-        body: "Our founders have built, staffed and run outpatient therapy practices. Not consulted on them. Run them.",
+        body: "Our founders have built, staffed and scaled outpatient therapy practices. Not consulted on them. Run them."
       },
       {
         title: "We have owned the facilities",
-        body: "Licensed treatment center operations, from census and admissions through staffing, surveys and payer mix.",
+        body: "Licensed treatment centers, run day to day: census and admissions through staffing, surveys and payer mix."
       },
       {
         title: "Guarantees, in writing",
@@ -110,7 +109,7 @@ export const content = {
       },
       {
         title: "Done for you, end to end",
-        body: "Website, CRM, tracking, automations and campaigns are built, launched and maintained by us. No homework queue.",
+        body: "We help practices like yours grow without adding to your workload. Website, CRM, tracking, automations and campaigns are built, launched and maintained by us."
       },
     ],
   },
@@ -251,7 +250,7 @@ export const content = {
           price: "Call for quote",
         },
         {
-          title: "Done-for-you OP-to-IOP program build",
+          title: "Done-for-you GOP to IOP program build",
           body: "Full program build including curriculum.",
           price: "$20,000",
         },
@@ -355,19 +354,19 @@ export const content = {
       {
         heading: "Company",
         links: [
-          { label: "Services", href: "/#services" },
-          { label: "Who We Serve", href: "/#who-we-serve" },
-          { label: "Pricing", href: "/#pricing" },
-          { label: "About", href: "/#about" },
+          { label: "Our services", href: "/#services" },
+          { label: "Who we serve", href: "/#who-we-serve" },
+          { label: "Plans and pricing", href: "/#pricing" },
+          { label: "About us", href: "/#about" },
         ],
       },
       {
-        heading: "Support",
+        heading: "Resources",
         links: [
-          { label: "FAQ", href: "/#faq" },
-          { label: "Let's chat", href: SCHEDULER_URL },
-          { label: "Privacy", href: "/privacy" },
-          { label: "Terms", href: "/terms" },
+          { label: "Blog", href: "/blog" },
+          { label: "Common questions", href: "/#faq" },
+          { label: "Privacy notice", href: "/privacy" },
+          { label: "Terms and guarantees", href: "/terms" },
         ],
       },
     ],

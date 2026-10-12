@@ -1,0 +1,22 @@
+# Cloudflare Workers Static Assets reads this file.
+# `headers()` in next.config.ts does not apply under `output: export`.
+
+/models/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/brand/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Next emits the Open Graph card as an extensionless file, so Cloudflare
+# cannot infer its type and social scrapers would reject it.
+/opengraph-image
+  Content-Type: image/png
+  Cache-Control: public, max-age=31536000, immutable
+
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/*
+  Cache-Control: public, max-age=0, must-revalidate
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin

@@ -41,9 +41,11 @@ export default function Footer() {
 
           {content.footer.columns.map((column) => (
             <nav key={column.heading} aria-label={column.heading}>
-              <h2 className="font-mono text-[0.7rem] tracking-[0.18em] text-[var(--muted)] uppercase">
+              {/* The <nav> already carries this as its accessible name, so
+                  a heading here would only pad the page's heading count. */}
+              <p className="font-mono text-[0.7rem] tracking-[0.18em] text-[var(--muted)] uppercase">
                 {column.heading}
-              </h2>
+              </p>
               <ul className="mt-4 space-y-3">
                 {column.links.map((link) => (
                   <li key={link.href}>

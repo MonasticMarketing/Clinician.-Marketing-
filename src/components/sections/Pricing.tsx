@@ -116,24 +116,26 @@ export default function Pricing() {
         <h3 className="text-lg font-semibold text-[var(--white)]">
           {pricing.alaCarte.heading}
         </h3>
-        <ul className="mt-6 grid gap-6 md:grid-cols-3">
+        <dl className="mt-6 grid gap-6 md:grid-cols-3">
           {pricing.alaCarte.items.map((item) => (
-            <li
+            <div
               key={item.title}
               className="border-t border-white/10 pt-5 md:border-t-0 md:border-l md:pt-0 md:pl-6 md:first:border-l-0 md:first:pl-0"
             >
-              <h4 className="text-[0.95rem] font-semibold text-[var(--white)]">
+              <dt className="text-[0.95rem] font-semibold text-[var(--white)]">
                 {item.title}
-              </h4>
-              <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">
-                {item.body}
-              </p>
-              <p className="mt-3 font-mono text-[0.8rem] text-[var(--glow)]">
-                {item.price}
-              </p>
-            </li>
+              </dt>
+              <dd>
+                <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">
+                  {item.body}
+                </p>
+                <p className="mt-3 font-mono text-[0.8rem] text-[var(--glow)]">
+                  {item.price}
+                </p>
+              </dd>
+            </div>
           ))}
-        </ul>
+        </dl>
         <a
           href={content.nav.cta.href}
           data-booking

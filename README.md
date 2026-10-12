@@ -16,22 +16,16 @@ npm run dev          # http://localhost:3000
 ```
 
 ```bash
-npm run build        # next build
-npm run build:cf     # build the Cloudflare Worker bundle
-npm run preview      # run the real Worker locally (workerd)
-npm run deploy       # build + deploy to Cloudflare Workers
+npm run build        # static export into out/
+npm run start        # serve out/ locally
+npm run deploy       # build + deploy to Cloudflare
 npm run typecheck    # tsc --noEmit
 npm run lint
 ```
 
-> **Do not change `build` to run the Cloudflare adapter.**
-> `opennextjs-cloudflare build` calls this script internally, so pointing it
-> at the adapter forks forever. Keep `build` as `next build`.
-
-> **Next is pinned to 16.3.8.** Next 16.4 emits a manifest that
-> `@opennextjs/cloudflare` does not yet understand, which makes every
-> server-rendered route return 500 on Workers while static assets keep
-> serving. See `DECISIONS.md` section 7.
+> **Next is pinned to 16.3.8.** That pin dates from the OpenNext adapter,
+> which the site no longer uses, so it can be relaxed — see
+> `DECISIONS.md` section 9.
 
 ---
 
@@ -73,14 +67,16 @@ scheduling dialog, so no mail credentials are required.
 **Live at https://clinician.marketing**
 (also `www.clinician.marketing`; `clinician--marketing.tyler-cc9.workers.dev` as a fallback)
 
-The site runs on Cloudflare Workers via `@opennextjs/cloudflare`.
+The site is a **static export** (`output: "export"`) deployed as a
+static-assets Worker — no script runs on a page request, so Cloudflare
+serves every page straight from its edge cache.
 
 ```bash
 npm run deploy
 ```
 
-That builds the Worker bundle and deploys it to the `clinician--marketing`
-Worker named in `wrangler.jsonc`. You need wrangler authenticated — either
+That runs `next build` (writing `out/`) and uploads it to the
+`clinician--marketing` Worker named in `wrangler.jsonc`. You need wrangler authenticated — either
 `npx wrangler login`, or a `CLOUDFLARE_API_TOKEN` in the environment:
 
 ```bash
@@ -100,11 +96,17 @@ hostname 404s.
 
 If you connect the repo to Workers Builds, set:
 
-- **Build command:** `npx opennextjs-cloudflare build`
+- **Production branch:** `main`
+- **Build command:** `npm run build`
 - **Deploy command:** `npx wrangler deploy`
 
-The default `npm run build` is *not* enough on its own — it produces the
-Next output but not the Worker entrypoint.
+### Headers
+
+`headers()` in `next.config.ts` does **not** apply to a static export.
+Caching and security headers live in `public/_headers`, which Cloudflare
+Workers Static Assets reads. That file also sets `Content-Type:
+image/png` on `/opengraph-image`, which Next emits without an extension —
+without it, social scrapers reject the card.
 
 ### Hosting it elsewhere
 
@@ -219,6 +221,18 @@ See `DECISIONS.md` for its effect on measured performance.
 The lockup is light-on-dark artwork with the background keyed out to
 transparency, so it only reads on dark surfaces. Use the light file
 anywhere the background is pale.
+
+## Writing articles
+
+Posts live in `src/content/posts/` — one file each, holding metadata and
+the article body as Markdown in a template literal. Add a new file and
+register it in `src/content/posts/index.ts`; the route, sitemap entry and
+blog index pick it up automatically.
+
+`src/lib/markdown.ts` renders the Markdown at build time, so none of it
+reaches the browser. On top of standard Markdown it adds heading ids for
+the contents list, turns footnote markers written as `[^3]` into
+superscript links, and gives the numbered references matching ids.
 
 ## Booking dialog
 

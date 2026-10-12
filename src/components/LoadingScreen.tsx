@@ -23,7 +23,7 @@ export default function LoadingScreen() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/brand/brain-splash.svg"
-          alt=""
+          alt="Point cloud rendering of a human brain"
           width={300}
           height={300}
           className="splash-brain"

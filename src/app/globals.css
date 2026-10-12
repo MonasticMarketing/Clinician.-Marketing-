@@ -170,6 +170,128 @@
 }
 
 /* ------------------------------------------------------------------
+   Long-form article typography. Scoped to .article so it only applies
+   to rendered Markdown, never to the marketing sections.
+   ------------------------------------------------------------------ */
+
+.article {
+  color: var(--muted-strong);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.article > * + * {
+  margin-top: 1.15rem;
+}
+
+.article h2 {
+  margin-top: 3.25rem;
+  scroll-margin-top: 6rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--white);
+}
+
+.article h3 {
+  margin-top: 2.25rem;
+  scroll-margin-top: 6rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--white);
+}
+
+.article h2 + *,
+.article h3 + * {
+  margin-top: 0.9rem;
+}
+
+.article ul,
+.article ol {
+  padding-left: 1.4rem;
+}
+
+.article ul {
+  list-style: disc;
+}
+
+.article ol {
+  list-style: decimal;
+}
+
+.article li {
+  margin-top: 0.5rem;
+  scroll-margin-top: 6rem;
+}
+
+.article li::marker {
+  color: var(--glow);
+}
+
+.article strong {
+  color: var(--white);
+  font-weight: 600;
+}
+
+.article a {
+  color: var(--glow);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+
+.article a:hover {
+  color: var(--white);
+}
+
+.article blockquote {
+  margin-top: 1.75rem;
+  border-left: 2px solid var(--glow);
+  border-radius: 0 0.75rem 0.75rem 0;
+  background: rgb(167 139 250 / 0.07);
+  padding: 1.1rem 1.35rem;
+  color: var(--muted-strong);
+}
+
+.article blockquote > * + * {
+  margin-top: 0.75rem;
+}
+
+.article hr {
+  margin-top: 3rem;
+  border: 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.article code {
+  border-radius: 0.3rem;
+  background: rgb(255 255 255 / 0.08);
+  padding: 0.12em 0.4em;
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+}
+
+/* Footnote markers and their targets in the reference list. */
+.article .footnote-ref {
+  font-size: 0.72em;
+  line-height: 1;
+}
+
+.article .footnote-ref a {
+  padding: 0 0.1em;
+  text-decoration: none;
+}
+
+.article .footnote-ref a:hover {
+  text-decoration: underline;
+}
+
+.article li:target {
+  background: rgb(167 139 250 / 0.12);
+  border-radius: 0.35rem;
+}
+
+/* ------------------------------------------------------------------
    Booking dialog. Centred in the viewport via <dialog>'s own layout,
    so no transform maths and no scroll-position dependence.
    ------------------------------------------------------------------ */

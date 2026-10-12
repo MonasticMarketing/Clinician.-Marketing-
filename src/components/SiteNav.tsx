@@ -127,31 +127,35 @@ export default function SiteNav() {
         hidden={!open}
         className="border-t border-white/10 bg-[rgb(7_11_31/0.96)] md:hidden"
       >
-        <ul className="mx-auto max-w-7xl px-4 py-3 sm:px-6">
-          {content.nav.items.map((item) => (
-            <li key={item.href}>
+        {/* Rendered only while open: leaving a second copy of every nav
+            link in the markup duplicates each anchor text sitewide. */}
+        {open ? (
+          <ul className="mx-auto max-w-7xl px-4 py-3 sm:px-6">
+            {content.nav.items.map((item) => (
+              <li key={item.href}>
+                <a
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  className="block rounded-md px-2 py-3 text-base text-[var(--muted-strong)] transition-colors hover:text-[var(--white)]"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+            <li className="pt-2 pb-1">
               <a
-                href={item.href}
+                href={content.nav.cta.href}
+                data-booking
+                target="_blank"
+                rel="noopener"
                 onClick={() => setOpen(false)}
-                className="block rounded-md px-2 py-3 text-base text-[var(--muted-strong)] transition-colors hover:text-[var(--white)]"
+                className="block rounded-full bg-[var(--white)] px-4 py-3 text-center text-sm font-semibold text-[#0a0f2b]"
               >
-                {item.label}
+                {content.nav.cta.label}
               </a>
             </li>
-          ))}
-          <li className="pt-2 pb-1">
-            <a
-              href={content.nav.cta.href}
-              data-booking
-              target="_blank"
-              rel="noopener"
-              onClick={() => setOpen(false)}
-              className="block rounded-full bg-[var(--white)] px-4 py-3 text-center text-sm font-semibold text-[#0a0f2b]"
-            >
-              {content.nav.cta.label}
-            </a>
-          </li>
-        </ul>
+          </ul>
+        ) : null}
       </div>
     </header>
   );

@@ -3,12 +3,13 @@
   // Must match the existing Worker so deploys land on the same script and
   // keep whatever routes and custom domains are already attached to it.
   "name": "clinician--marketing",
-  "main": ".open-next/worker.js",
   "compatibility_date": "2025-09-23",
-  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  // Static export output. With no "main", this deploys as a pure
+  // static-assets Worker: Cloudflare serves the files from its edge and
+  // no script is invoked on a page request.
   "assets": {
-    "directory": ".open-next/assets",
-    "binding": "ASSETS"
+    "directory": "out",
+    "not_found_handling": "404-page"
   },
   // Keep the *.workers.dev URL alive alongside the custom domains. Adding
   // `routes` disables it by default, which takes the site offline on that

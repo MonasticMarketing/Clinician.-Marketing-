@@ -86,6 +86,7 @@ export default function Hero() {
               className="inline-flex items-center justify-center rounded-full bg-[var(--white)] px-7 py-3.5 text-sm font-semibold text-[#0a0f2b] transition-transform duration-200 hover:scale-[1.03]"
             >
               {hero.primaryCta.label}
+              <span className="sr-only"> — book a 30-minute call</span>
             </a>
             <a
               href={hero.secondaryCta.href}
