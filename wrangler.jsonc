@@ -10,6 +10,17 @@
     "directory": ".open-next/assets",
     "binding": "ASSETS"
   },
+  // Keep the *.workers.dev URL alive alongside the custom domains. Adding
+  // `routes` disables it by default, which takes the site offline on that
+  // hostname — useful as a fallback and for testing before DNS resolves.
+  "workers_dev": true,
+  "preview_urls": true,
+  // Declared here so a deploy re-creates them if they are ever removed,
+  // and so CI deploys keep the custom domains attached.
+  "routes": [
+    { "pattern": "clinician.marketing", "custom_domain": true },
+    { "pattern": "www.clinician.marketing", "custom_domain": true }
+  ],
   "observability": {
     "enabled": true
   }
