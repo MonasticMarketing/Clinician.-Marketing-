@@ -74,7 +74,8 @@ submission and logs a warning rather than showing the visitor an error.
 
 ## Deploying
 
-**Live at https://clinician--marketing.tyler-cc9.workers.dev**
+**Live at https://clinician.marketing**
+(also `www.clinician.marketing`; `clinician--marketing.tyler-cc9.workers.dev` as a fallback)
 
 The site runs on Cloudflare Workers via `@opennextjs/cloudflare`.
 
@@ -90,9 +91,18 @@ Worker named in `wrangler.jsonc`. You need wrangler authenticated — either
 CLOUDFLARE_API_TOKEN=... npm run deploy
 ```
 
-Set runtime variables in the Cloudflare dashboard under **Worker →
-Settings → Variables**. Note that `NEXT_PUBLIC_*` variables are inlined at
-build time, so changing one needs a redeploy rather than just a save.
+Set runtime secrets (`RESEND_API_KEY`, `CONTACT_TO_EMAIL`,
+`CONTACT_FROM_EMAIL`) in the Cloudflare dashboard under **Worker →
+Settings → Variables**.
+
+`NEXT_PUBLIC_*` variables cannot be set there — Next inlines them at build
+time. They live in the committed `.env.production`, so changing one needs a
+redeploy.
+
+The custom domains are declared in `wrangler.jsonc`. Note that declaring
+`routes` disables the `*.workers.dev` URL by default, which is why
+`"workers_dev": true` is pinned alongside them — without it, the fallback
+hostname 404s.
 
 ### Deploying from CI (Workers Builds)
 

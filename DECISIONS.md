@@ -342,7 +342,10 @@ being withheld. The brain silhouette is a 14 KB gzipped SVG.
 
 ## 7. Deployment
 
-**Live at https://clinician--marketing.tyler-cc9.workers.dev**
+**Live at https://clinician.marketing**
+
+Also serving on `www.clinician.marketing` and, as a fallback,
+`https://clinician--marketing.tyler-cc9.workers.dev`.
 
 Deployed to the existing `clinician--marketing` Cloudflare Worker using the
 API token you supplied. The token was passed inline as an environment
@@ -416,11 +419,36 @@ installation rather than anonymously.
 Note the GitHub default branch is still `claude/charming-galileo-oqyuw6`;
 switch it to `main` in the repo settings if you want the tidier default.
 
+### Custom domain
+
+`clinician.marketing` and `www.clinician.marketing` are attached to the
+Worker as custom domains, declared in `wrangler.jsonc` so deploys keep
+them. Cloudflare is both the registrar and the DNS provider for this zone.
+
+Two things worth knowing if this is ever rebuilt:
+
+**Declaring `routes` silently disables the `*.workers.dev` URL.** It turned
+the fallback hostname into a 404 while the custom domain was still waiting
+on DNS, so the site was briefly unreachable on every hostname.
+`"workers_dev": true` is now pinned in `wrangler.jsonc` to prevent that.
+
+**The zone sat in `pending` for a while on a stale delegation.** The
+registry already listed the correct nameserver pair (`koa`/`marjory`), but
+resolvers were still serving a cached `braden`/`love` delegation with a
+86400s TTL. It cleared on its own; the zone is now `active`. If a zone
+looks stuck in `pending`, check the registry over RDAP rather than a
+caching resolver before changing anything, and re-run the activation check:
+`PUT /zones/{zone_id}/activation_check`.
+
+Zone settings applied: `always_use_https` and `automatic_https_rewrites`
+are on, so `http://` 301s to `https://`. SSL mode is Full.
+
+`www` currently serves the site rather than redirecting to the apex. The
+canonical tags all point at the apex so this is not an SEO problem, but a
+single redirect rule would be tidier if you want one.
+
 ### Still to do on the Worker
 
-- **Set `NEXT_PUBLIC_SITE_URL`** to `https://clinician.marketing` (Worker →
-  Settings → Variables). Until then, canonical URLs, `sitemap.xml` and
-  JSON-LD all point at the default.
 - **Set the mail variables** (`RESEND_API_KEY`, `CONTACT_TO_EMAIL`,
   `CONTACT_FROM_EMAIL`). Verified live: the contact endpoint currently
   returns `{"ok":true,"delivered":false}` — it accepts submissions and logs
@@ -432,9 +460,12 @@ These are all Worker dashboard settings; no code change is needed. Variables
 set there are picked up on the next request, except `NEXT_PUBLIC_*` ones,
 which are inlined at build time and need a redeploy (`npm run deploy`).
 
-### Verified live
+### Verified live on https://clinician.marketing
 
-All routes return 200 on the deployed Worker: `/`, `/privacy`, `/terms`,
-`/sitemap.xml`, `/robots.txt`, `/opengraph-image` (PNG), the point-cloud
-binaries and the brand SVGs. The contact endpoint accepts a POST and
-returns 200.
+All routes return 200: `/`, `/privacy`, `/terms`, `/sitemap.xml`,
+`/robots.txt`, `/opengraph-image` (PNG), the point-cloud binaries and the
+brand SVGs. `/api/contact` returns 405 to GET and accepts POST. TLS
+verifies, HTTP/2, and `http://` 301s to `https://`.
+
+Canonical URLs, `og:url` and the sitemap all emit
+`https://clinician.marketing`, confirmed in the served HTML.
