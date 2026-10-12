@@ -64,9 +64,11 @@ export default function Hero() {
             {hero.eyebrow}
           </p>
 
+          {/* Sized for a full-sentence headline rather than a short phrase:
+              a 4.25rem setting would run to five or six lines here. */}
           <h1
             id="hero-heading"
-            className="mt-6 text-[2.5rem] leading-[1.05] font-semibold sm:text-6xl lg:text-[4.25rem]"
+            className="mt-6 max-w-3xl text-[1.95rem] leading-[1.1] font-semibold xs:text-[2.2rem] sm:text-[2.75rem] lg:text-[3.3rem]"
           >
             <span className="gradient-text">{hero.headline}</span>
           </h1>

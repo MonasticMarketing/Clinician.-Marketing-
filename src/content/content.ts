@@ -24,7 +24,7 @@ export const content = {
     name: "Clinician Marketing",
     /** Shown in the footer small print, and nowhere else on the site. */
     parentCompanyLine: "Clinician Marketing is a Monastic Marketing LLC company.",
-    email: "hello@clinician.marketing",
+    email: "Team@bemonastic.com",
     phone: "(972) 366-4899",
     /** Digits only, for the tel: link. */
     phoneHref: "+19723664899",
@@ -76,7 +76,8 @@ export const content = {
 
   hero: {
     eyebrow: "Behavioral health marketing and business consulting",
-    headline: "Marketing built by people who have ran what you run.",
+    headline:
+      "We’ve owned, run and scaled practices and treatment centers, and now we help yours grow.",
     subhead:
       "Clinician Marketing is behavioral health marketing and business consulting from operators who have owned therapy practices and licensed treatment facilities. Not a generalist agency learning your field on your budget.",
     primaryCta: { label: "Let's chat", href: "#contact" },
@@ -225,8 +226,9 @@ export const content = {
           "4 hours of consulting per month",
           "One monthly mastermind",
         ],
-        price: "Call for pricing",
-        cta: "Call for Pricing",
+        price: "$7,000",
+        priceNote: "per month",
+        cta: "Let’s chat",
       },
     ] satisfies Plan[],
     /** Rendered directly beneath the plan grid. */

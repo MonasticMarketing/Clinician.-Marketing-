@@ -14,11 +14,15 @@ arrived as a rendered image rather than as a file this environment could
 read, so I traced the mark by eye from it. It is visually very close and
 reads correctly at nav size, but it will not be geometrically exact.
 
-**Action:** replace `public/brand/m-logo.svg` with the original vector,
+**Status: you are sending a replacement.** Drop it at `public/brand/m-logo.svg`,
 keeping the path and filename. Crop its `viewBox` tight to the glyph so the
 baseline alignment in `Wordmark.tsx` keeps working. Nothing else changes.
 
-### 1.2 The booking widget is Monastic-branded
+### 1.2 The booking widget is Monastic-branded — ACCEPTED
+
+**Resolved: you confirmed Monastic branding on the widget is fine, since it
+is the parent company.** No action needed. Original note kept below for
+context.
 
 Your brief says Monastic Marketing appears only in the footer small print —
 no Monastic logo anywhere. The booking widget you supplied
@@ -36,7 +40,7 @@ This is a GoHighLevel setting, not something the site can override.
 The embed URL lives at `content.scheduler.embedUrl` in
 `src/content/content.ts` if it changes.
 
-### 1.3 Guarantee terms are placeholder legal text
+### 1.3 Guarantee terms are placeholder legal text — DEFERRED BY YOU
 
 `/terms` section 2 drafts both guarantees in plain language — what is
 measured, over what period, what the remedy is, what you must do, what is
@@ -52,18 +56,17 @@ excluded. **Every number is a bracketed placeholder:**
 The page carries a visible "Draft for review" banner. **Remove it only once
 the content is final.** None of this has been reviewed by a lawyer.
 
-### 1.4 Privacy notice is placeholder
+### 1.4 Privacy notice is placeholder — DEFERRED BY YOU
 
 `/privacy` has bracketed gaps for your vendor list, retention period, and
 which state privacy laws apply. Same visible draft banner.
 
-### 1.5 Plan 3 has no price
+### 1.5 Plan 3 pricing — RESOLVED
 
-As you noted, no figure was given for Enterprise / Multi-location. It shows
-**"Call for pricing"** with a "Let's chat" CTA. Set `price` on the
-`enterprise` plan in `content.ts` when you have a number.
+Enterprise / Multi-location is set to **$7,000 per month**, as you
+specified, with a "Let's chat" CTA.
 
-### 1.6 The founders' story is written blind
+### 1.6 The founders' story is written blind — YOU WILL REVISE LATER
 
 `content.about.paragraphs` uses "our founders" throughout and names nobody,
 as instructed. The specifics — hiring and losing clinicians, carrying
@@ -75,28 +78,21 @@ anything that is not true of you.
 
 - **Phone** — `(972) 366-4899`, as supplied. Live in the footer and the
   contact section.
-- **Email** — `hello@clinician.marketing` is **my invention**. Change
-  `content.brand.email` if it is wrong, and make sure the mailbox exists.
-- **Domain** — I assumed `https://clinician.marketing`. Set
-  `NEXT_PUBLIC_SITE_URL` to the real one; metadata, sitemap and JSON-LD all
-  follow it.
+- **Email** — `Team@bemonastic.com`, as you specified. You said you will
+  change it later; it is one line in `content.brand.email`.
+- **Domain** — confirmed as `clinician.marketing`. This is the default in
+  `src/lib/site.ts`. **Set `NEXT_PUBLIC_SITE_URL` on the Worker** so
+  metadata, sitemap and JSON-LD emit the right origin (see section 7).
 
-### 1.8 "who have ran what you run"
+### 1.8 Hero headline — RESOLVED
 
-You asked for "ran", so that is what ships. Flagging once and then leaving
-it alone: **"have ran" is not standard English** — the past participle of
-"run" is "run". Given the audience is skeptical practice owners and the
-brand voice is "clinical-grade", a grammar slip in the single biggest line
-of type on the site is the kind of thing that costs credibility.
+Now reads: **"We've owned, run and scaled practices and treatment centers,
+and now we help yours grow."** This also resolves the earlier "have ran"
+grammar concern.
 
-If the goal was to avoid the repetition of "run … run", these keep the
-rhythm and stay correct:
-
-- "Marketing built by people who have run what you run."
-- "Marketing built by people who have run a practice like yours."
-- "Built by people who have sat in your chair."
-
-One line in `content.hero.headline` either way.
+The headline type scale was reduced (3.3rem on desktop, down from 4.25rem)
+because a full sentence at the old size ran to six lines. It now sets in
+four.
 
 ---
 
@@ -305,13 +301,9 @@ being withheld. The brain silhouette is a 14 KB gzipped SVG.
 
 ## 6. Smaller calls
 
-- **Deploy target: Vercel.** The Cloudflare connector is present in this
-  session, but it only exposes D1, KV, R2 and Workers *reads* — there is no
-  Pages deploy tool, so I could not have deployed there even if we wanted
-  to. Cloudflare would additionally need the Next-on-Pages adapter and an
-  edge-runtime change on the contact route. Vercel needs neither.
-- **Nothing is deployed.** No hosting credentials were available in this
-  session. The build is production-ready; see README for the steps.
+- **Deploy target: Cloudflare Workers** (changed from the original Vercel
+  plan once you pointed at the existing `clinician--marketing` Worker). See
+  section 7.
 - **Email via Resend**, chosen for a plain HTTPS API with no SDK dependency.
   Swapping providers means editing one `fetch` in
   `src/app/api/contact/route.ts`.
@@ -344,3 +336,73 @@ being withheld. The brain silhouette is a 14 KB gzipped SVG.
   without JavaScript. It is also emitted as `FAQPage` JSON-LD.
 - **Fonts:** Inter for display and body, JetBrains Mono for telemetry
   labels, both self-hosted by `next/font` with no external request.
+
+
+---
+
+## 7. Deployment
+
+**Live at https://clinician--marketing.tyler-cc9.workers.dev**
+
+Deployed to the existing `clinician--marketing` Cloudflare Worker using the
+API token you supplied. The token was passed inline as an environment
+variable for the deploy command only — it was never written to a file and
+is not in the repository. **Rotate it now**, as you planned: it was pasted
+in a chat transcript.
+
+### How it is wired
+
+The site is a Next.js app running on Workers through
+[`@opennextjs/cloudflare`](https://opennext.js.org/cloudflare):
+
+- `wrangler.jsonc` — Worker name (matches the existing script, so routes and
+  custom domains attached to it carry over), entrypoint `.open-next/worker.js`,
+  static assets binding, `nodejs_compat`.
+- `open-next.config.ts` — adapter defaults. Nothing to revalidate, so no
+  cache backend is configured.
+
+```bash
+npm run deploy    # build the Worker bundle and deploy it
+npm run preview   # run the real Worker locally via workerd
+```
+
+### Two things that bit during setup, documented so they do not recur
+
+**1. Do not point `npm run build` at the adapter.** `opennextjs-cloudflare
+build` invokes the project's own build script internally. Setting
+`"build": "opennextjs-cloudflare build"` makes it call itself — it forks
+until the machine falls over. `build` stays `next build`; the Worker bundle
+is `build:cf`.
+
+**2. Next is pinned to 16.3.8, not 16.4.0.** Next 16.4 emits a new
+`.next/server/preview-props.json` manifest that `@opennextjs/cloudflare`
+1.20.10 does not recognise, so its patched `loadManifest` throws and every
+server-rendered route returns HTTP 500. Static assets still served, which
+makes it look like a partial success — it is not. 16.3.8 is inside the
+adapter's supported range (`>=16.3.8`), builds clean, and `npm audit`
+reports zero vulnerabilities. **Do not bump Next past 16.3.x until the
+adapter adds support**, and if you do, smoke-test an actual rendered route
+rather than just the homepage asset.
+
+### Still to do on the Worker
+
+- **Set `NEXT_PUBLIC_SITE_URL`** to `https://clinician.marketing` (Worker →
+  Settings → Variables). Until then, canonical URLs, `sitemap.xml` and
+  JSON-LD all point at the default.
+- **Set the mail variables** (`RESEND_API_KEY`, `CONTACT_TO_EMAIL`,
+  `CONTACT_FROM_EMAIL`). Verified live: the contact endpoint currently
+  returns `{"ok":true,"delivered":false}` — it accepts submissions and logs
+  them, but **sends no email**, so enquiries are being dropped right now.
+- **Attach the custom domain** `clinician.marketing` to the Worker.
+- Analytics IDs if you want them.
+
+These are all Worker dashboard settings; no code change is needed. Variables
+set there are picked up on the next request, except `NEXT_PUBLIC_*` ones,
+which are inlined at build time and need a redeploy (`npm run deploy`).
+
+### Verified live
+
+All routes return 200 on the deployed Worker: `/`, `/privacy`, `/terms`,
+`/sitemap.xml`, `/robots.txt`, `/opengraph-image` (PNG), the point-cloud
+binaries and the brand SVGs. The contact endpoint accepts a POST and
+returns 200.

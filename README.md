@@ -16,11 +16,22 @@ npm run dev          # http://localhost:3000
 ```
 
 ```bash
-npm run build        # production build
-npm start            # serve the production build
+npm run build        # next build
+npm run build:cf     # build the Cloudflare Worker bundle
+npm run preview      # run the real Worker locally (workerd)
+npm run deploy       # build + deploy to Cloudflare Workers
 npm run typecheck    # tsc --noEmit
 npm run lint
 ```
+
+> **Do not change `build` to run the Cloudflare adapter.**
+> `opennextjs-cloudflare build` calls this script internally, so pointing it
+> at the adapter forks forever. Keep `build` as `next build`.
+
+> **Next is pinned to 16.3.8.** Next 16.4 emits a manifest that
+> `@opennextjs/cloudflare` does not yet understand, which makes every
+> server-rendered route return 500 on Workers while static assets keep
+> serving. See `DECISIONS.md` section 7.
 
 ---
 
@@ -63,22 +74,41 @@ submission and logs a warning rather than showing the visitor an error.
 
 ## Deploying
 
-### Vercel (recommended)
+**Live at https://clinician--marketing.tyler-cc9.workers.dev**
 
-1. Import the repository in Vercel. The framework is detected automatically;
-   no build settings need changing.
-2. Add the environment variables above under **Settings → Environment
-   Variables**.
-3. Point the domain at the project and set `NEXT_PUBLIC_SITE_URL` to match.
+The site runs on Cloudflare Workers via `@opennextjs/cloudflare`.
 
-The contact endpoint (`src/app/api/contact/route.ts`) runs on the Node.js
-runtime and deploys as a serverless function with no extra configuration.
+```bash
+npm run deploy
+```
 
-### Anywhere else
+That builds the Worker bundle and deploys it to the `clinician--marketing`
+Worker named in `wrangler.jsonc`. You need wrangler authenticated — either
+`npx wrangler login`, or a `CLOUDFLARE_API_TOKEN` in the environment:
 
-`npm run build && npm start` runs a standard Node server on `PORT`. Any host
-that runs Node 20+ works. Cloudflare Pages would need the Next-on-Pages
-adapter and a runtime change on the contact route — see `DECISIONS.md`.
+```bash
+CLOUDFLARE_API_TOKEN=... npm run deploy
+```
+
+Set runtime variables in the Cloudflare dashboard under **Worker →
+Settings → Variables**. Note that `NEXT_PUBLIC_*` variables are inlined at
+build time, so changing one needs a redeploy rather than just a save.
+
+### Deploying from CI (Workers Builds)
+
+If you connect the repo to Workers Builds, set:
+
+- **Build command:** `npx opennextjs-cloudflare build`
+- **Deploy command:** `npx wrangler deploy`
+
+The default `npm run build` is *not* enough on its own — it produces the
+Next output but not the Worker entrypoint.
+
+### Hosting it elsewhere
+
+`npm run build && npm start` runs a standard Node server on `PORT`, and the
+app deploys to Vercel as-is with no configuration. The Cloudflare config
+files are inert on other hosts.
 
 ---
 
