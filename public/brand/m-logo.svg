@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="24.4 18 51.3 64" fill="#F5F7FF" role="img" aria-hidden="true">
+  <!--
+    Clinician Marketing "M" monogram.
+    NOTE: hand-traced from a supplied raster reference. Replace with the
+    original vector for exact fidelity — see DECISIONS.md.
+  -->
+  <g>
+    <!-- left outer blade -->
+    <path d="M24.9 18.5 L50 44.9 L45.9 49.4 L32.0 35.0 L32.0 77.3 L24.9 81.5 Z"/>
+    <!-- left inner blade -->
+    <path d="M34.1 37.6 L45.2 49.2 L45.2 73.6 L34.1 78.3 Z"/>
+    <!-- right outer blade (mirror) -->
+    <path d="M75.1 18.5 L50 44.9 L54.1 49.4 L68.0 35.0 L68.0 77.3 L75.1 81.5 Z"/>
+    <!-- right inner blade (mirror) -->
+    <path d="M65.9 37.6 L54.8 49.2 L54.8 73.6 L65.9 78.3 Z"/>
+  </g>
+</svg>

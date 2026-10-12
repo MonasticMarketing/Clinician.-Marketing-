@@ -1,0 +1,290 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   Brand color system. These are the single source of truth — every
+   component reads them through the Tailwind tokens defined below.
+   ------------------------------------------------------------------ */
+:root {
+  --bg: #070b1f;
+  --bg-2: #0b1340;
+  --blue: #3b82f6;
+  --violet: #8b5cf6;
+  --glow: #a78bfa;
+  --white: #f5f7ff;
+  --muted: #8a93b8;
+
+  /* Derived tokens. --muted on --bg is 5.6:1, so it is safe for body
+     copy; --muted-strong is used where text sits over the lighter
+     scrim and needs more headroom. */
+  --muted-strong: #a8b0d0;
+  --hairline: rgb(255 255 255 / 0.1);
+  --hairline-strong: rgb(255 255 255 / 0.18);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-2: var(--bg-2);
+  --color-blue: var(--blue);
+  --color-violet: var(--violet);
+  --color-glow: var(--glow);
+  --color-white-brand: var(--white);
+  --color-muted: var(--muted);
+  --color-muted-strong: var(--muted-strong);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono-brand), ui-monospace, SFMono-Regular, monospace;
+
+  --breakpoint-xs: 26rem;
+}
+
+@layer base {
+  * {
+    border-color: var(--hairline);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Sticky nav is 4rem tall; keep anchored sections clear of it. */
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--white);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  /* Visible, high-contrast focus for every interactive element. */
+  :focus-visible {
+    outline: 2px solid var(--glow);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--violet);
+    color: var(--white);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+@layer utilities {
+  /* Skip link: offscreen until focused. */
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -4rem;
+    z-index: 100;
+    transition: top 150ms ease;
+  }
+  .skip-link:focus {
+    top: 1rem;
+  }
+
+  /* Content sections sit on a translucent scrim so body copy keeps
+     WCAG AA contrast over the moving point cloud behind it. */
+  .scrim {
+    background:
+      radial-gradient(
+        120% 100% at 50% 0%,
+        rgb(7 11 31 / 0.55) 0%,
+        rgb(7 11 31 / 0.86) 45%,
+        rgb(7 11 31 / 0.93) 100%
+      );
+    backdrop-filter: blur(14px) saturate(115%);
+    -webkit-backdrop-filter: blur(14px) saturate(115%);
+  }
+
+  .scrim-soft {
+    background: linear-gradient(
+      to bottom,
+      rgb(7 11 31 / 0) 0%,
+      rgb(7 11 31 / 0.72) 22%,
+      rgb(7 11 31 / 0.88) 100%
+    );
+  }
+
+  .hairline {
+    border-color: var(--hairline);
+  }
+
+  .gradient-text {
+    background: linear-gradient(
+      100deg,
+      var(--white) 0%,
+      var(--white) 62%,
+      #c9bcfb 84%,
+      var(--glow) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .card-surface {
+    background: linear-gradient(
+      165deg,
+      rgb(11 19 64 / 0.72) 0%,
+      rgb(7 11 31 / 0.78) 100%
+    );
+    border: 1px solid var(--hairline);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  /* Soft violet bloom used behind headings and featured cards. */
+  .bloom::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      140deg,
+      rgb(167 139 250 / 0.55),
+      rgb(59 130 246 / 0.18) 45%,
+      transparent 70%
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Loading screen. Pure CSS so it always clears, even without JS.
+   ------------------------------------------------------------------ */
+
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(
+      70% 60% at 50% 45%,
+      var(--bg-2) 0%,
+      var(--bg) 70%
+    ),
+    var(--bg);
+  /* Never intercept input: the page underneath stays usable throughout. */
+  pointer-events: none;
+  animation: splash-out 3.5s ease-in-out forwards;
+}
+
+.splash-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.75rem;
+  padding: 1.5rem;
+}
+
+.splash-brain {
+  width: min(58vw, 320px);
+  height: auto;
+  animation: splash-breathe 3.5s ease-in-out infinite;
+}
+
+.splash-mark {
+  font-size: clamp(1rem, 3.2vw, 1.25rem);
+  color: var(--white);
+  opacity: 0;
+  animation: splash-fade-in 700ms ease-out 350ms forwards;
+}
+
+.splash-bar {
+  position: relative;
+  display: block;
+  width: min(42vw, 180px);
+  height: 2px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.12);
+}
+
+.splash-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  background: linear-gradient(90deg, var(--blue), var(--glow));
+  animation: splash-progress 3.2s ease-in-out forwards;
+}
+
+@keyframes splash-out {
+  0%,
+  74% {
+    opacity: 1;
+    visibility: visible;
+  }
+  99% {
+    opacity: 0;
+    visibility: visible;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes splash-progress {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes splash-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+}
+
+@keyframes splash-fade-in {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Respect the OS reduced-motion setting across the whole site. The
+   canvas reads the same query in JS and drops cursor physics. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
