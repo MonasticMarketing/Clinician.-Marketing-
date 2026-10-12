@@ -384,6 +384,38 @@ reports zero vulnerabilities. **Do not bump Next past 16.3.x until the
 adapter adds support**, and if you do, smoke-test an actual rendered route
 rather than just the homepage asset.
 
+### Workers Builds (push-to-deploy)
+
+The first CI run failed at `Cloning repository...` with "error occurred
+while fetching repository", one second in — before any build command ran.
+
+Cause: the Worker was created at 01:25, when this repository had **no
+commits and no branches at all**, so Cloudflare defaulted its production
+branch to `main`, which did not exist. A `main` branch now exists and
+tracks the same commit as `claude/charming-galileo-oqyuw6`.
+
+For CI to actually build, the dashboard settings must be (Worker →
+Settings → Build):
+
+| Setting | Value |
+| --- | --- |
+| Production branch | `main` |
+| Build command | `npx opennextjs-cloudflare build` |
+| Deploy command | `npx wrangler deploy` |
+
+The default `npm run build` is **not** sufficient: it produces the Next
+output but not `.open-next/worker.js`, so the deploy step then fails with a
+missing entrypoint.
+
+If the clone still fails after this, the other cause is the Cloudflare
+GitHub App not having access to this repository — check
+GitHub → Settings → Applications → Cloudflare Workers → Repository access.
+The repo is public, but Workers Builds still clones through the app
+installation rather than anonymously.
+
+Note the GitHub default branch is still `claude/charming-galileo-oqyuw6`;
+switch it to `main` in the repo settings if you want the tidier default.
+
 ### Still to do on the Worker
 
 - **Set `NEXT_PUBLIC_SITE_URL`** to `https://clinician.marketing` (Worker →
