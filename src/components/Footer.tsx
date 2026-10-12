@@ -19,13 +19,7 @@ export default function Footer() {
       <div className="mx-auto w-full max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid gap-10 md:grid-cols-[minmax(0,1.6fr)_repeat(2,minmax(0,1fr))]">
           <div className="max-w-sm">
-            <div className="flex items-center gap-2.5 text-[0.95rem] font-semibold tracking-tight">
-              <span aria-hidden="true" className="relative flex h-2.5 w-2.5">
-                <span className="absolute inset-0 rounded-full bg-[var(--glow)] opacity-70 blur-[3px]" />
-                <span className="absolute inset-0 rounded-full bg-[var(--glow)]" />
-              </span>
-              <Wordmark />
-            </div>
+            <Wordmark height="1.5rem" />
             <p className="mt-4 text-sm leading-relaxed text-[var(--muted)]">
               {content.footer.tagline}
             </p>
@@ -53,12 +47,24 @@ export default function Footer() {
               <ul className="mt-4 space-y-3">
                 {column.links.map((link) => (
                   <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-[var(--muted-strong)] transition-colors hover:text-[var(--white)]"
-                    >
-                      {link.label}
-                    </Link>
+                    {link.href.startsWith("http") ? (
+                      <a
+                        href={link.href}
+                        data-booking
+                        target="_blank"
+                        rel="noopener"
+                        className="text-sm text-[var(--muted-strong)] transition-colors hover:text-[var(--white)]"
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className="text-sm text-[var(--muted-strong)] transition-colors hover:text-[var(--white)]"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>

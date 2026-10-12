@@ -7,26 +7,42 @@ you. Read the first section before launch — nothing there should ship as-is.
 
 ## 1. NEEDS YOUR REVIEW BEFORE LAUNCH
 
-### 1.1 The M logo is a hand-traced reconstruction
+### 1.1 Logo — RESOLVED
+
+The supplied artwork is in. `public/brand/wordmark.webp` is the horizontal
+lockup used in the nav and footer; the app-icon tile supplies the favicon
+and the Apple touch icon; `public/brand/wordmark-light.png` is the stacked
+dark-on-white lockup, kept for light backgrounds (it is not used on the
+site, which is dark throughout).
+
+The lockup arrived on a solid `#070B1E` background. That would have shown
+as a rectangle over the point cloud in the nav, so the background was keyed
+out to transparency, estimating per-pixel alpha from each channel's
+excursion away from the background colour, which preserves the antialiased
+edges. The earlier hand-traced SVG has been deleted.
+
+<details><summary>Original note</summary>
 
 **`public/brand/m-logo.svg` is not your original vector.** The file you sent
 arrived as a rendered image rather than as a file this environment could
 read, so I traced the mark by eye from it. It is visually very close and
 reads correctly at nav size, but it will not be geometrically exact.
 
-**Status: you are sending a replacement.** Drop it at `public/brand/m-logo.svg`,
-keeping the path and filename. Crop its `viewBox` tight to the glyph so the
-baseline alignment in `Wordmark.tsx` keeps working. Nothing else changes.
+Superseded by the supplied artwork.
+</details>
 
-### 1.2 The booking widget is Monastic-branded — ACCEPTED
+### 1.2 Booking widget branding — RESOLVED
 
-**Resolved: you confirmed Monastic branding on the widget is fine, since it
-is the parent company.** No action needed. Original note kept below for
-context.
+You first confirmed Monastic branding was acceptable since it is the parent
+company, then supplied a replacement calendar. The current widget
+(`.../widget/booking/dYHqgRAxyhgJUOb2XPle`) renders as **"Clinician
+Marketing Appointment"** with the Clinician Marketing mark, so the
+brief's rule — Monastic only in the footer small print — now holds
+everywhere on the site. Original note kept below for context.
 
 Your brief says Monastic Marketing appears only in the footer small print —
 no Monastic logo anywhere. The booking widget you supplied
-(`link.bemonastic.com/widget/booking/dVVauiWwgIOGGnY719c2`) currently
+(`link.bemonastic.com/widget/booking/dYHqgRAxyhgJUOb2XPle`) currently
 renders **the Monastic Marketing logo and the title "Monastic 30-minute
 Call"** inside the contact section.
 
@@ -469,3 +485,42 @@ verifies, HTTP/2, and `http://` 301s to `https://`.
 
 Canonical URLs, `og:url` and the sitemap all emit
 `https://clinician.marketing`, confirmed in the served HTML.
+
+
+---
+
+## 8. Contact form removed, booking dialog added
+
+The "Tell us what you are running" section, its form and the inline
+calendar were removed at your request. Booking now happens in a dialog.
+
+**How the dialog is wired.** Any link carrying `data-booking` opens it —
+event delegation on the document, rather than a React context provider.
+That matters because it keeps the hero, pricing and footer as server
+components with no client bundle; only the dialog itself ships JavaScript.
+
+Every trigger's `href` is the real scheduler URL with `target="_blank"`, so
+the links work as ordinary links before hydration, if the JavaScript fails,
+and on modified clicks (cmd/ctrl-click still opens a new tab). The dialog
+is an enhancement, never the only route to booking.
+
+It is built on the native `<dialog>` element with `showModal()`, which
+provides focus trapping, Escape-to-close, inertness of the page behind and
+top-layer painting without reimplementing any of it. The scheduler iframe
+is only mounted after the dialog is first opened, so its scripts never load
+for visitors who do not book. axe reports zero violations with the dialog
+open, and focus lands on the close button.
+
+**Knock-on changes:**
+
+- `src/app/api/contact/route.ts` was deleted — nothing called it any more,
+  and leaving an unauthenticated POST endpoint in place for no reason is a
+  small liability. **`RESEND_API_KEY`, `CONTACT_TO_EMAIL` and
+  `CONTACT_FROM_EMAIL` are no longer needed.** The earlier warning about
+  the form silently dropping enquiries is resolved: there is no form.
+- The site now has **no dynamic routes at all** — every route is
+  prerendered static.
+- "Contact" was dropped from the nav. It pointed at the section that no
+  longer exists, and the "Let's chat" CTA sits immediately to its right.
+  Email and phone remain in the footer and in the dialog's own footer.
+  Say the word if you want the nav item back pointing at the dialog.

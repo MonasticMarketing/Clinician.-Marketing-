@@ -19,6 +19,14 @@ export type Plan = {
   featured?: boolean;
 };
 
+/**
+ * Scheduling provider embed (GoHighLevel). Used both as the dialog's
+ * iframe source and as the href on every "Let's chat" link, so those
+ * links still work if JavaScript never runs.
+ */
+const SCHEDULER_URL =
+  "https://link.bemonastic.com/widget/booking/dYHqgRAxyhgJUOb2XPle";
+
 export const content = {
   brand: {
     name: "Clinician Marketing",
@@ -31,14 +39,9 @@ export const content = {
     tagline: "Behavioral health marketing and business consulting",
   },
 
-  /**
-   * Scheduling provider embed (Calendly, SavvyCal, HubSpot, Cal.com …).
-   * Paste the provider's embed URL here and the booking iframe replaces
-   * the placeholder in the contact section automatically. Leave it empty
-   * to keep showing the placeholder.
-   */
+  /** Exposed for the booking dialog's iframe. */
   scheduler: {
-    embedUrl: "https://link.bemonastic.com/widget/booking/dVVauiWwgIOGGnY719c2",
+    embedUrl: SCHEDULER_URL,
     title: "Book a call with Clinician Marketing",
   },
 
@@ -69,9 +72,8 @@ export const content = {
       { label: "Who We Serve", href: "#who-we-serve" },
       { label: "Pricing", href: "#pricing" },
       { label: "About", href: "#about" },
-      { label: "Contact", href: "#contact" },
     ] satisfies NavItem[],
-    cta: { label: "Let's chat", href: "#contact" },
+    cta: { label: "Let's chat", href: SCHEDULER_URL },
   },
 
   hero: {
@@ -80,7 +82,7 @@ export const content = {
       "We’ve owned, run and scaled practices and treatment centers, and now we help yours grow.",
     subhead:
       "Clinician Marketing is behavioral health marketing and business consulting from operators who have owned therapy practices and licensed treatment facilities. Not a generalist agency learning your field on your budget.",
-    primaryCta: { label: "Let's chat", href: "#contact" },
+    primaryCta: { label: "Let's chat", href: SCHEDULER_URL },
     secondaryCta: { label: "See Plans", href: "#pricing" },
     /** Monospace labels floating near the point cloud. Keep to three or four. */
     telemetry: [
@@ -339,51 +341,11 @@ export const content = {
     ],
   },
 
-  contact: {
-    id: "contact",
-    eyebrow: "Book a call",
-    heading: "Tell us what you are running.",
-    intro:
-      "A short form, then a working call. We will come prepared with a view on what we would do and what it would cost.",
-    privacyNote:
-      "Please do not include any patient or clinical information in this form. We do not collect protected health information here.",
-    schedulerPlaceholder: {
-      heading: "Prefer to book directly?",
-      body: "Pick a time that suits you and we will come to the call prepared.",
-    },
-    fields: {
-      name: "Your name",
-      practice: "Practice or organization",
-      role: "Your role",
-      size: "Practice size",
-      email: "Email",
-      phone: "Phone",
-      message: "What are you trying to solve?",
-    },
-    roleOptions: [
-      "Therapist or psychologist",
-      "Psychiatrist or PMHNP",
-      "Practice owner or partner",
-      "Executive or administrator",
-      "Marketing lead",
-      "Other",
-    ],
-    sizeOptions: [
-      "Solo practitioner",
-      "2–4 clinicians",
-      "5–10 clinicians",
-      "11–19 clinicians",
-      "20+ clinicians",
-      "IOP or PHP program",
-      "Multi-location or residential",
-    ],
-    submitLabel: "Request a call",
-    submittingLabel: "Sending",
-    successHeading: "Request received.",
-    successBody:
-      "We will reply within one business day with times for a call.",
-    errorBody:
-      "That did not send. Email us directly and we will pick it up from there.",
+  /** Copy for the booking dialog that the "Let's chat" buttons open. */
+  booking: {
+    heading: "Book a call",
+    body: "Pick a time that suits you. We will come to the call prepared.",
+    footnote: "Prefer to talk now?",
   },
 
   footer: {
@@ -403,7 +365,7 @@ export const content = {
         heading: "Support",
         links: [
           { label: "FAQ", href: "/#faq" },
-          { label: "Let's chat", href: "/#contact" },
+          { label: "Let's chat", href: SCHEDULER_URL },
           { label: "Privacy", href: "/privacy" },
           { label: "Terms", href: "/terms" },
         ],

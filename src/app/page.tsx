@@ -1,6 +1,5 @@
 import Hero from "@/components/Hero";
 import About from "@/components/sections/About";
-import Contact from "@/components/sections/Contact";
 import CredibilityStrip from "@/components/sections/CredibilityStrip";
 import Faq from "@/components/sections/Faq";
 import HowItWorks from "@/components/sections/HowItWorks";
@@ -24,7 +23,6 @@ export default function Home() {
       <HowItWorks />
       <About />
       <Faq />
-      <Contact />
     </>
   );
 }

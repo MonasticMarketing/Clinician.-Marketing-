@@ -57,18 +57,14 @@ optional — the site builds and runs without any of it.
 | Variable | Purpose |
 | --- | --- |
 | `NEXT_PUBLIC_SITE_URL` | Canonical origin for metadata, sitemap and JSON-LD. Defaults to `https://clinician.marketing`. |
-| `RESEND_API_KEY` | Resend API key, so contact form submissions are emailed. |
-| `CONTACT_TO_EMAIL` | Where enquiries are delivered. |
-| `CONTACT_FROM_EMAIL` | Verified sender address on your Resend domain. |
 | `NEXT_PUBLIC_GA_ID` | GA4 measurement ID, e.g. `G-XXXXXXXXXX`. |
 | `NEXT_PUBLIC_GTM_ID` | Google Tag Manager container ID, e.g. `GTM-XXXXXXX`. |
 
 No analytics IDs are hardcoded anywhere. If neither `NEXT_PUBLIC_GA_ID` nor
 `NEXT_PUBLIC_GTM_ID` is set, no tracking script is emitted at all.
 
-If the mail variables are missing, the contact endpoint still accepts the
-submission and logs a warning rather than showing the visitor an error.
-**Set them before launch**, or enquiries go nowhere.
+There is no contact form and no mail transport — booking goes through the
+scheduling dialog, so no mail credentials are required.
 
 ---
 
@@ -90,10 +86,6 @@ Worker named in `wrangler.jsonc`. You need wrangler authenticated — either
 ```bash
 CLOUDFLARE_API_TOKEN=... npm run deploy
 ```
-
-Set runtime secrets (`RESEND_API_KEY`, `CONTACT_TO_EMAIL`,
-`CONTACT_FROM_EMAIL`) in the Cloudflare dashboard under **Worker →
-Settings → Variables**.
 
 `NEXT_PUBLIC_*` variables cannot be set there — Next inlines them at build
 time. They live in the committed `.env.production`, so changing one needs a
@@ -215,15 +207,28 @@ See `DECISIONS.md` for its effect on measured performance.
 
 ---
 
-## The logo
+## Brand assets
 
-`public/brand/m-logo.svg` is the "M" used in the wordmark, rendered by
-`src/components/Wordmark.tsx` between "Clinician " and "arketing".
+| File | Use |
+| --- | --- |
+| `public/brand/wordmark.webp` | Horizontal lockup, nav and footer (`Wordmark.tsx`) |
+| `public/brand/wordmark-light.png` | Stacked lockup, dark on white — for light backgrounds |
+| `public/brand/icon-512.png` | App icon tile |
+| `src/app/icon.png`, `src/app/apple-icon.png` | Favicon and Apple touch icon |
 
-**The file currently there is a hand-traced reconstruction, not the original
-vector.** Replace it with the real asset, keeping the same path and
-filename, and nothing else needs to change. Its `viewBox` should be cropped
-tight to the glyph so the baseline alignment in the wordmark keeps working.
+The lockup is light-on-dark artwork with the background keyed out to
+transparency, so it only reads on dark surfaces. Use the light file
+anywhere the background is pale.
+
+## Booking dialog
+
+There is no contact form. Every "Let's chat" link carries `data-booking`,
+and `BookingModal.tsx` opens a centred `<dialog>` with the scheduling embed.
+
+The links point at the scheduler URL directly with `target="_blank"`, so
+they still work without JavaScript. To change the calendar, edit
+`SCHEDULER_URL` at the top of `src/content/content.ts` — it feeds both the
+dialog's iframe and every link's `href`.
 
 ---
 

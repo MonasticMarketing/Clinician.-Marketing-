@@ -79,6 +79,9 @@ export default function Pricing() {
 
             <a
               href={nav.cta.href}
+              data-booking
+              target="_blank"
+              rel="noopener"
               className={`mt-8 inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-semibold transition-transform duration-200 hover:scale-[1.02] ${
                 plan.featured
                   ? "bg-[var(--white)] text-[#0a0f2b]"
@@ -133,6 +136,9 @@ export default function Pricing() {
         </ul>
         <a
           href={content.nav.cta.href}
+          data-booking
+          target="_blank"
+          rel="noopener"
           className="mt-7 inline-flex items-center justify-center rounded-full border border-white/20 bg-white/[0.04] px-6 py-3 text-sm font-semibold text-[var(--white)] transition-colors hover:border-white/40"
         >
           Book a Call

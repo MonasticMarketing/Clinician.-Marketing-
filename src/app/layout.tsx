@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 
 import Analytics from "@/components/Analytics";
+import BookingModal from "@/components/BookingModal";
 import BrainBackdrop from "@/components/BrainBackdrop";
 import LoadingScreen from "@/components/LoadingScreen";
 import Footer from "@/components/Footer";
@@ -91,6 +92,9 @@ export default function RootLayout({
           </main>
           <Footer />
         </div>
+
+        {/* Opened by any link carrying data-booking. */}
+        <BookingModal />
 
         <Analytics />
       </body>

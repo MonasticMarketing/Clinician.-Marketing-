@@ -170,6 +170,63 @@
 }
 
 /* ------------------------------------------------------------------
+   Booking dialog. Centred in the viewport via <dialog>'s own layout,
+   so no transform maths and no scroll-position dependence.
+   ------------------------------------------------------------------ */
+
+.booking-dialog {
+  margin: auto; /* centres in both axes inside the top layer */
+  max-width: min(42rem, calc(100vw - 2rem));
+  width: 100%;
+  max-height: calc(100dvh - 2rem);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: visible;
+}
+
+.booking-dialog::backdrop {
+  background: rgb(4 6 18 / 0.78);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.booking-dialog[open] {
+  animation: booking-in 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.booking-panel {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100dvh - 2rem);
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid var(--hairline-strong);
+  background: linear-gradient(
+    165deg,
+    rgb(11 19 64 / 0.98) 0%,
+    rgb(7 11 31 / 0.99) 100%
+  );
+  box-shadow: 0 30px 80px -20px rgb(0 0 0 / 0.75);
+}
+
+/* The scheduler is a third-party iframe of unknown height, so give it a
+   generous viewport-relative box and let it scroll internally. */
+.booking-frame {
+  flex: 1 1 auto;
+  min-height: min(34rem, 60dvh);
+  overflow: hidden;
+  background: #fff;
+}
+
+@keyframes booking-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.985);
+  }
+}
+
+/* ------------------------------------------------------------------
    Loading screen. Pure CSS so it always clears, even without JS.
    ------------------------------------------------------------------ */
 

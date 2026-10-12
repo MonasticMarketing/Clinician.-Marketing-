@@ -80,6 +80,9 @@ export default function Hero() {
           <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
             <a
               href={hero.primaryCta.href}
+              data-booking
+              target="_blank"
+              rel="noopener"
               className="inline-flex items-center justify-center rounded-full bg-[var(--white)] px-7 py-3.5 text-sm font-semibold text-[#0a0f2b] transition-transform duration-200 hover:scale-[1.03]"
             >
               {hero.primaryCta.label}

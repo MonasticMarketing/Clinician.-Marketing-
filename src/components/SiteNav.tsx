@@ -58,15 +58,8 @@ export default function SiteNav() {
         aria-label="Primary"
         className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8"
       >
-        <Link
-          href="/"
-          className="group flex items-center gap-2.5 text-[0.95rem] font-semibold tracking-tight"
-        >
-          <span aria-hidden="true" className="relative flex h-2.5 w-2.5">
-            <span className="absolute inset-0 rounded-full bg-[var(--glow)] opacity-70 blur-[3px]" />
-            <span className="absolute inset-0 rounded-full bg-[var(--glow)]" />
-          </span>
-          <Wordmark className="text-[var(--white)]" />
+        <Link href="/" className="flex items-center" aria-label={content.brand.name}>
+          <Wordmark height="1.65rem" />
         </Link>
 
         <ul className="hidden items-center gap-1 md:flex">
@@ -85,6 +78,9 @@ export default function SiteNav() {
         <div className="flex items-center gap-2">
           <a
             href={content.nav.cta.href}
+            data-booking
+            target="_blank"
+            rel="noopener"
             className="hidden rounded-full bg-[var(--white)] px-4 py-2 text-sm font-semibold text-[#0a0f2b] transition-transform duration-200 hover:scale-[1.03] sm:inline-flex"
           >
             {content.nav.cta.label}
@@ -146,6 +142,9 @@ export default function SiteNav() {
           <li className="pt-2 pb-1">
             <a
               href={content.nav.cta.href}
+              data-booking
+              target="_blank"
+              rel="noopener"
               onClick={() => setOpen(false)}
               className="block rounded-full bg-[var(--white)] px-4 py-3 text-center text-sm font-semibold text-[#0a0f2b]"
             >
