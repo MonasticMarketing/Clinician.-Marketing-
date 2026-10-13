@@ -78,7 +78,7 @@ export const content = {
   hero: {
     eyebrow: "Behavioral health marketing and business consulting",
     headline:
-      "We’ve owned, run and scaled practices and treatment centers, and now we help yours grow.",
+      "The blueprint we’ve used as owners to operate, scale and sell behavioral health practices.",
     subhead:
       "Clinician Marketing is behavioral health marketing and business consulting from operators who have owned therapy practices and licensed treatment facilities. Not a generalist agency learning your field on your budget.",
     primaryCta: { label: "Let's chat", href: SCHEDULER_URL },
@@ -101,7 +101,7 @@ export const content = {
       },
       {
         title: "We have owned the facilities",
-        body: "Licensed treatment centers, run day to day: census and admissions through staffing, surveys and payer mix."
+        body: "Licensed treatment centers we operate day to day: census and admissions through staffing, surveys and payer mix."
       },
       {
         title: "Guarantees, in writing",
@@ -192,7 +192,7 @@ export const content = {
           "One monthly Grow Your Practice mastermind",
           "One 1-hour consulting call per quarter",
         ],
-        price: "$600 one-time setup",
+        price: "$999 one-time setup",
         priceNote: "then $100/month for website hosting and CRM",
         cta: "Let's chat",
       },
@@ -210,7 +210,7 @@ export const content = {
           "2 hours of consulting per month",
           "One monthly mastermind",
         ],
-        price: "$4,500",
+        price: "Up to $5,000",
         priceNote: "per month",
         cta: "Let's chat",
         featured: true,
@@ -227,8 +227,7 @@ export const content = {
           "4 hours of consulting per month",
           "One monthly mastermind",
         ],
-        price: "$7,000",
-        priceNote: "per month",
+        price: "Call for quote",
         cta: "Let’s chat",
       },
     ] satisfies Plan[],
@@ -289,6 +288,7 @@ export const content = {
       "Clinician Marketing exists because our founders got tired of explaining behavioral health to marketers.",
       "They have owned outpatient therapy practices and licensed treatment facilities. They have hired clinicians and lost them, carried payroll through a slow quarter, prepared for surveys, and watched a strong month of admissions evaporate because an intake line went unanswered on a Friday afternoon.",
       "That is the perspective we bring to marketing. We know what an admission is worth, what your clinicians will and will not tolerate, and which growth is worth having. We are not a generalist agency with a behavioral health page on the website. This is the only field we work in.",
+      "What you get is the blueprint we used to operate, scale and eventually sell those businesses: the systems, the campaigns and the judgment calls that moved census. We run it for your practice instead of ours.",
     ],
   },
 

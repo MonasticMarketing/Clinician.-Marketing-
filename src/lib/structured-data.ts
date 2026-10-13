@@ -59,17 +59,20 @@ export const serviceJsonLd = {
               price: 100,
               priceCurrency: "USD",
               unitCode: "MON",
-              description: "$600 one-time setup, then $100 per month",
+              description: "$999 one-time setup, then $100 per month",
             },
           }
         : {}),
       ...(plan.id === "growing"
         ? {
             priceSpecification: {
+              // Quoted as a ceiling rather than a flat rate, so the
+              // schema states a maximum instead of a fixed price.
               "@type": "UnitPriceSpecification",
-              price: 4500,
+              maxPrice: 5000,
               priceCurrency: "USD",
               unitCode: "MON",
+              description: "Up to $5,000 per month",
             },
           }
         : {}),
