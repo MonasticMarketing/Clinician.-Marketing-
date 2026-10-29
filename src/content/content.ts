@@ -364,6 +364,7 @@ export const content = {
         heading: "Resources",
         links: [
           { label: "Blog", href: "/blog" },
+          { label: "Psychology Today guide", href: "/psychology-today-optimization-guide" },
           { label: "Common questions", href: "/#faq" },
           { label: "Privacy notice", href: "/privacy" },
           { label: "Terms and guarantees", href: "/terms" },

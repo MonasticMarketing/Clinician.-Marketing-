@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 
 import { posts } from "@/content/posts";
+import { psychologyTodayGuide } from "@/content/psychology-today-guide";
 import { siteUrl } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -12,6 +13,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${siteUrl}/blog`,
       lastModified,
       changeFrequency: "weekly",
+      priority: 0.7,
+    },
+    {
+      url: `${siteUrl}/${psychologyTodayGuide.slug}`,
+      lastModified: new Date(`${psychologyTodayGuide.updated}T00:00:00Z`),
+      changeFrequency: "yearly" as const,
       priority: 0.7,
     },
     ...posts.map((post) => ({

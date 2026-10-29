@@ -234,6 +234,23 @@ reaches the browser. On top of standard Markdown it adds heading ids for
 the contents list, turns footnote markers written as `[^3]` into
 superscript links, and gives the numbered references matching ids.
 
+### The Psychology Today guide
+
+`/psychology-today-optimization-guide` is the exception to the above. It
+was authored as hand-built HTML rather than Markdown, because its diagram,
+fact grid, comparison table, example boxes and two-column checklist carry
+the argument and Markdown cannot express them.
+
+The markup lives in `src/content/psychology-today-guide.ts` and its styles
+are scoped under `.pt-guide` at the bottom of `src/app/globals.css`. Those
+styles use `--g-` prefixed tokens so nothing there can shadow the site's
+own `--bg` / `--blue` / `--violet` for a child element, and they set type
+in Inter rather than the two extra Google families the source file loaded.
+
+The page is linked from the footer and from the top of `/blog`, and it is
+registered in `src/app/sitemap.ts` by hand — it is not part of the `posts`
+array.
+
 ## Booking dialog
 
 There is no contact form. Every "Let's chat" link carries `data-booking`,

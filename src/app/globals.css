@@ -483,3 +483,536 @@
     transition-duration: 0.001ms !important;
   }
 }
+
+/* ------------------------------------------------------------------
+   The Psychology Today guide.
+
+   This page was authored as hand-built HTML rather than Markdown (see
+   src/content/psychology-today-guide.ts), so it brings its own editorial
+   system: diagram, fact grid, tables, example boxes, checklist. Every
+   rule is scoped to .pt-guide so none of it reaches the marketing
+   sections or the blog.
+
+   Its colour tokens are prefixed --g- rather than reusing the site's, so
+   nothing here can shadow --bg / --blue / --violet for a child. Type is
+   the site's Inter, not the two extra Google families the source file
+   loaded: a second display face for one page is not worth the request.
+   ------------------------------------------------------------------ */
+
+.pt-guide {
+  --g-bg-2: #0d1330;
+  --g-bg-3: #141b3d;
+  --g-line: #243061;
+  --g-fg: #e8ebf7;
+  --g-fg-2: #b4bcda;
+  --g-fg-3: #949dbf;
+  --g-violet: #a799ff;
+  --g-violet-soft: rgb(139 124 255 / 0.14);
+  --g-blue: #7cb4ff;
+  --g-blue-soft: rgb(94 163 255 / 0.12);
+  --g-good: #5bd4a4;
+  --g-warn: #f2c062;
+
+  color: var(--g-fg);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+
+.pt-guide .wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  padding-inline: 1rem;
+}
+.pt-guide .wrap-wide {
+  max-width: 1040px;
+}
+@media (min-width: 640px) {
+  .pt-guide .wrap {
+    padding-inline: 1.5rem;
+  }
+}
+
+.pt-guide a {
+  color: var(--g-blue);
+  text-decoration: none;
+}
+.pt-guide a:hover {
+  text-decoration: underline;
+}
+
+/* hero ------------------------------------------------------------- */
+
+.pt-hero {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--g-line);
+}
+.pt-hero .wrap {
+  position: relative;
+  padding-block: 4.5rem 3rem;
+}
+.pt-hero-col {
+  max-width: 44rem;
+}
+.pt-hero-scrim-sm,
+.pt-hero-scrim-lg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.pt-hero-scrim-sm {
+  background: linear-gradient(
+    to bottom,
+    rgb(7 11 31 / 0.2) 0%,
+    rgb(7 11 31 / 0.62) 14%,
+    rgb(7 11 31 / 0.9) 26%,
+    rgb(7 11 31 / 0.92) 100%
+  );
+}
+.pt-hero-scrim-lg {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .pt-hero-scrim-sm {
+    display: none;
+  }
+  .pt-hero-scrim-lg {
+    display: block;
+    inset: 0 auto 0 0;
+    width: 64%;
+    background: linear-gradient(
+      to right,
+      rgb(7 11 31 / 0.93) 0%,
+      rgb(7 11 31 / 0.88) 50%,
+      rgb(7 11 31 / 0.42) 80%,
+      rgb(7 11 31 / 0) 100%
+    );
+  }
+  .pt-hero .wrap {
+    padding-block: 6rem 4rem;
+  }
+}
+
+.pt-back {
+  display: inline-block;
+  margin-bottom: 1.75rem;
+  font-family: var(--font-mono-brand), ui-monospace, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--glow);
+}
+
+.pt-guide .eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--g-violet);
+}
+.pt-guide h1 {
+  font-weight: 700;
+  font-size: clamp(2rem, 5vw, 3.1rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0.875rem 0 1.125rem;
+  text-wrap: balance;
+}
+.pt-guide .lede {
+  font-size: 1.25rem;
+  line-height: 1.5;
+  color: var(--g-fg-2);
+  margin: 0 0 1.375rem;
+  max-width: 62ch;
+}
+@media (min-width: 1024px) {
+  /* Ends before the scrim starts fading, so the point cloud never sits
+     behind a line of body copy. */
+  .pt-hero .lede {
+    max-width: 36rem;
+  }
+}
+.pt-guide .meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.125rem;
+  color: var(--g-fg-3);
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+.pt-guide .meta span::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--g-violet);
+  margin-right: 0.5rem;
+  vertical-align: 2px;
+}
+.pt-guide .cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.625rem;
+}
+.pt-guide .btn {
+  display: inline-block;
+  padding: 0.75rem 1.25rem;
+  border-radius: 999px;
+  background: var(--white);
+  color: #0a0f2b;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  white-space: nowrap;
+  transition: transform 0.2s ease;
+}
+.pt-guide .btn:hover {
+  transform: scale(1.02);
+  text-decoration: none;
+}
+.pt-guide .btn.ghost {
+  background: transparent;
+  color: var(--g-fg);
+  border: 1px solid var(--g-line);
+}
+.pt-guide .btn.ghost:hover {
+  border-color: var(--g-violet);
+  background: var(--g-violet-soft);
+  transform: none;
+}
+
+/* article ---------------------------------------------------------- */
+
+/* The body is opaque enough to hold AA contrast over the point cloud,
+   which keeps moving behind it. */
+.pt-body {
+  background: linear-gradient(
+    to bottom,
+    rgb(7 11 31 / 0.9) 0%,
+    rgb(7 11 31 / 0.96) 3%,
+    rgb(7 11 31 / 0.96) 100%
+  );
+}
+
+.pt-guide article {
+  padding-block: 2.5rem 1.5rem;
+}
+.pt-guide article h2 {
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3.4vw, 2rem);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  margin: 3.5rem 0 0.875rem;
+  text-wrap: balance;
+  /* Clears the fixed nav, so a link from the contents list does not
+     land with its heading hidden behind it. */
+  scroll-margin-top: 5.5rem;
+}
+.pt-guide article h2:first-of-type {
+  margin-top: 0.5rem;
+}
+.pt-guide article h3 {
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1.3;
+  margin: 1.875rem 0 0.5rem;
+  text-wrap: balance;
+  scroll-margin-top: 5.5rem;
+}
+.pt-guide article h4 {
+  font-weight: 600;
+  font-size: 1rem;
+  margin: 1.375rem 0 0.375rem;
+}
+.pt-guide article p {
+  margin: 0 0 1rem;
+  max-width: 68ch;
+}
+.pt-guide article ul,
+.pt-guide article ol {
+  margin: 0 0 1.125rem;
+  padding-left: 1.375rem;
+  max-width: 68ch;
+}
+/* Tailwind's preflight strips list markers, so they are set back here. */
+.pt-guide article ul {
+  list-style: disc;
+}
+.pt-guide article ol {
+  list-style: decimal;
+}
+.pt-guide article li {
+  margin: 0 0 0.5rem;
+}
+.pt-guide article li::marker {
+  color: var(--g-violet);
+}
+.pt-guide article strong {
+  color: var(--g-fg);
+  font-weight: 600;
+}
+.pt-guide sup {
+  font-size: 0.6875rem;
+  line-height: 0;
+}
+.pt-guide sup a {
+  color: var(--g-violet);
+  font-weight: 600;
+}
+.pt-guide .kicker {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--g-blue);
+  margin: 3.5rem 0 -0.5rem;
+}
+.pt-guide .kicker + h2 {
+  margin-top: 0.875rem;
+}
+
+.pt-guide .toc {
+  border: 1px solid var(--g-line);
+  background: var(--g-bg-2);
+  border-radius: 12px;
+  padding: 1.25rem 1.375rem;
+  margin: 0 0 2.25rem;
+}
+.pt-guide .toc .lbl {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--g-fg-3);
+  margin-bottom: 0.625rem;
+}
+.pt-guide .toc ol {
+  margin: 0;
+  padding-left: 1.25rem;
+  list-style: decimal;
+  columns: 2;
+  column-gap: 1.75rem;
+  max-width: none;
+}
+.pt-guide .toc li {
+  margin: 0 0 0.375rem;
+  font-size: 1rem;
+  break-inside: avoid;
+}
+.pt-guide .toc li::marker {
+  color: var(--g-violet);
+}
+.pt-guide .toc a {
+  color: var(--g-fg);
+}
+@media (max-width: 620px) {
+  .pt-guide .toc ol {
+    columns: 1;
+  }
+}
+
+.pt-guide .callout {
+  border-left: 3px solid var(--g-violet);
+  background: var(--g-violet-soft);
+  padding: 0.875rem 1.125rem;
+  border-radius: 0 10px 10px 0;
+  margin: 1.375rem 0;
+  max-width: 68ch;
+}
+.pt-guide .callout p {
+  margin: 0;
+}
+.pt-guide .callout p + p {
+  margin-top: 0.625rem;
+}
+.pt-guide .callout.blue {
+  border-color: var(--g-blue);
+  background: var(--g-blue-soft);
+}
+.pt-guide .callout.warn {
+  border-color: var(--g-warn);
+  background: rgb(242 192 98 / 0.1);
+}
+.pt-guide .callout .lbl {
+  font-weight: 700;
+}
+
+.pt-guide .facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+  margin: 1.5rem 0 0.5rem;
+}
+.pt-guide .fact {
+  border: 1px solid var(--g-line);
+  background: var(--g-bg-2);
+  border-radius: 12px;
+  padding: 1rem 1.125rem;
+  min-width: 0;
+}
+.pt-guide .fact .n {
+  font-weight: 700;
+  font-size: 1.75rem;
+  letter-spacing: -0.02em;
+  color: var(--g-fg);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+.pt-guide .fact .l {
+  font-size: 0.875rem;
+  color: var(--g-fg-2);
+  margin-top: 0.375rem;
+  line-height: 1.4;
+}
+.pt-guide .fact .s {
+  font-size: 0.8125rem;
+  color: var(--g-fg-3);
+  margin-top: 0.375rem;
+}
+
+.pt-guide figure {
+  margin: 1.625rem 0 1.875rem;
+}
+.pt-guide figure svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.pt-guide figcaption {
+  font-size: 0.875rem;
+  color: var(--g-fg-3);
+  margin-top: 0.625rem;
+  max-width: 68ch;
+}
+
+.pt-guide .tbl {
+  overflow-x: auto;
+  border: 1px solid var(--g-line);
+  border-radius: 12px;
+  margin: 1.125rem 0 1.5rem;
+}
+.pt-guide table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 560px;
+  font-size: 1rem;
+}
+.pt-guide th,
+.pt-guide td {
+  text-align: left;
+  padding: 0.6875rem 0.875rem;
+  border-bottom: 1px solid var(--g-line);
+  vertical-align: top;
+}
+.pt-guide th {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--g-fg-3);
+  background: var(--g-bg-2);
+}
+.pt-guide tr:last-child td {
+  border-bottom: 0;
+}
+.pt-guide td.num {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.pt-guide .example {
+  border: 1px solid var(--g-line);
+  background: var(--g-bg-2);
+  border-radius: 12px;
+  padding: 1.125rem 1.25rem;
+  margin: 1.125rem 0 1.5rem;
+  max-width: 68ch;
+}
+.pt-guide .example .lbl {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--g-fg-3);
+  margin-bottom: 0.5rem;
+}
+.pt-guide .example p {
+  margin: 0 0 0.625rem;
+}
+.pt-guide .example p:last-child {
+  margin: 0;
+}
+.pt-guide .example .bad {
+  color: var(--g-fg-3);
+  text-decoration: line-through;
+  text-decoration-color: rgb(242 192 98 / 0.7);
+}
+.pt-guide .count {
+  font-size: 0.8125rem;
+  color: var(--g-fg-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.pt-guide .check {
+  list-style: none;
+  padding: 0;
+  max-width: none;
+  columns: 2;
+  column-gap: 1.75rem;
+}
+.pt-guide .check li {
+  break-inside: avoid;
+  padding-left: 1.875rem;
+  position: relative;
+  margin-bottom: 0.625rem;
+  font-size: 1.0625rem;
+}
+.pt-guide .check li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 5px;
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  border: 1.5px solid var(--g-violet);
+  background: var(--g-violet-soft);
+}
+@media (max-width: 620px) {
+  .pt-guide .check {
+    columns: 1;
+  }
+}
+
+.pt-guide .band {
+  border: 1px solid var(--g-line);
+  background: linear-gradient(135deg, var(--g-bg-3), var(--g-bg-2));
+  border-radius: 16px;
+  padding: 1.75rem 1.625rem;
+  margin: 2.5rem 0 0.625rem;
+}
+.pt-guide .band h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+}
+.pt-guide .band p {
+  color: var(--g-fg-2);
+  margin: 0 0 1rem;
+  max-width: 60ch;
+}
+
+.pt-guide .refs {
+  font-size: 0.9375rem;
+  color: var(--g-fg-2);
+  max-width: none;
+}
+.pt-guide .refs li {
+  margin-bottom: 0.375rem;
+  word-break: break-word;
+  scroll-margin-top: 6rem;
+}
+.pt-guide .refs li:target {
+  background: rgb(167 139 250 / 0.14);
+  border-radius: 4px;
+}

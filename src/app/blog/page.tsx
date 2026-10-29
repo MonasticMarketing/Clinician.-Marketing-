@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { posts } from "@/content/posts";
+import { psychologyTodayGuide as guide } from "@/content/psychology-today-guide";
 
 export const metadata: Metadata = {
   title: { absolute: "Behavioral Health Marketing Blog | Clinician Marketing" },
@@ -41,7 +42,40 @@ export default function BlogIndexPage() {
           it.
         </p>
 
-        <ul className="mt-14 space-y-5">
+        {/* The guide is hand-built HTML rather than a Markdown post, so it
+            lives at its own route; it is surfaced here so the blog is still
+            the one place a reader finds everything we have written. */}
+        <section aria-labelledby="guides-heading" className="mt-14">
+          <h2
+            id="guides-heading"
+            className="font-mono text-[0.7rem] tracking-[0.2em] text-[var(--muted)] uppercase"
+          >
+            Guides
+          </h2>
+          <article className="card-surface mt-5 rounded-2xl p-6 transition-colors duration-200 hover:border-white/25 sm:p-8">
+            <p className="font-mono text-[0.7rem] tracking-[0.1em] text-[var(--muted)] uppercase">
+              Updated {formatDate(guide.updated)} · {guide.readingMinutes} min
+              read
+            </p>
+            <h3 className="mt-3 text-xl leading-snug font-semibold text-[var(--white)] sm:text-2xl">
+              <Link
+                href={`/${guide.slug}`}
+                className="underline-offset-4 hover:underline"
+              >
+                {guide.title}
+              </Link>
+            </h3>
+            <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">
+              {guide.lede}
+            </p>
+          </article>
+        </section>
+
+        <h2 className="mt-16 font-mono text-[0.7rem] tracking-[0.2em] text-[var(--muted)] uppercase">
+          Articles
+        </h2>
+
+        <ul className="mt-5 space-y-5">
           {posts.map((post) => (
             <li key={post.slug}>
               <article className="card-surface rounded-2xl p-6 transition-colors duration-200 hover:border-white/25 sm:p-8">
