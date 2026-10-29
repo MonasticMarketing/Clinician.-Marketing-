@@ -94,11 +94,24 @@ hostname 404s.
 
 ### Deploying from CI (Workers Builds)
 
-If you connect the repo to Workers Builds, set:
+Settings in the Cloudflare dashboard:
 
 - **Production branch:** `main`
-- **Build command:** `npm run build`
-- **Deploy command:** `npx wrangler deploy`
+- **Deploy command:** `npm run deploy` — this is `next build && wrangler
+  deploy`, so it needs no separate build command.
+
+If you would rather keep the two separate, set **Build command** to
+`npm run build` and **Deploy command** to `npx wrangler deploy`. Either
+works; what does not is a deploy command with no build, because
+`wrangler deploy` then runs against a repo with no `out/` and fails with
+*"The directory specified by the assets.directory field ... does not
+exist."*
+
+`scripts/ci-build.mjs` runs on `postinstall` as a safety net for exactly
+that case: in CI, with no `out/` present, it builds. It is inert outside
+CI, so a local `npm install` stays an install. Once the dashboard is set
+up properly, delete the script and the `postinstall` entry — leaving both
+only means the build runs twice.
 
 ### Headers
 
