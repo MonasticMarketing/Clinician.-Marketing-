@@ -36,7 +36,7 @@ Change text there and nothing else needs touching — the components,
 metadata, JSON-LD structured data and the Open Graph image all read from
 that one file.
 
-That includes the nav labels, hero headline, pricing plans and features,
+That includes the nav labels, hero headline, the offer and its price,
 FAQ questions and answers, form labels and options, the contact details and
 the footer. Legal copy is the exception: `/privacy` and `/terms` are prose
 pages at `src/app/privacy/page.tsx` and `src/app/terms/page.tsx`.

@@ -8,15 +8,12 @@
 
 export type NavItem = { label: string; href: string };
 
-export type Plan = {
+/** One line of the price: a one-time setup and a monthly retainer. */
+export type PriceLine = {
   id: string;
-  name: string;
-  audience: string;
-  features: string[];
-  price: string;
-  priceNote?: string;
-  cta: string;
-  featured?: boolean;
+  amount: string;
+  unit: string;
+  body: string;
 };
 
 /**
@@ -142,119 +139,72 @@ export const content = {
 
   services: {
     id: "services",
-    eyebrow: "What we do",
-    heading: "The whole growth function, not a channel.",
+    eyebrow: "What you get",
+    heading: "A complete marketing system, done for you.",
     intro:
-      "Most practices do not need another vendor to manage. They need the marketing and the business systems behind it handled together, by people who understand the clinical side.",
+      "Built for clinicians who own their practice. HIPAA compliant, trauma informed, and priced so it pays for itself with a single new client.",
     items: [
       {
-        title: "Search (SEO)",
-        body: "Local and multi-location search built around how patients and referrers actually look for care, with a page-one ranking guarantee on agreed keywords.",
+        title: "Website",
+        body: "Designed, written and built for you. No Google tags, no trackers, no PHI leaks.",
       },
       {
-        title: "Paid advertising",
-        body: "Search and social campaigns managed against a 4.25x return on ad spend guarantee, with tracking tied to admissions rather than form fills.",
+        title: "Text and email campaigns",
+        body: "Automated follow-up with booking links or secure fill forms on your site, so inquiries become appointments.",
       },
       {
-        title: "Websites",
-        body: "Fast, accessible sites that convert, built to preserve the search equity of whatever you are replacing.",
+        title: "Local SEO",
+        body: "Show up when people in your area search for the care you provide.",
       },
       {
-        title: "CRM and automations",
-        body: "Branded email, document signing, payments, and automation across marketing, sales and internal operations so nothing falls between intake and first session.",
+        title: "Google or Meta ads",
+        body: "Managed campaigns that reach ideal-fit clients without crossing compliance lines.",
       },
       {
         title: "Psychology Today optimization",
-        body: "Profiles rewritten and structured to rank and convert, for one clinician or for an entire team.",
+        body: "A profile rewritten to be found and chosen, not scrolled past.",
       },
       {
-        title: "Business consulting",
-        body: "Standing hours with operators who have run practices and facilities: pricing, payer mix, hiring, capacity, second locations, OP-to-IOP expansion.",
+        title: "HIPAA compliant, trauma informed",
+        body: "Every page, form, message and ad. Built by people who have owned practices and treatment centers.",
       },
     ],
   },
 
   pricing: {
     id: "pricing",
-    eyebrow: "Plans",
-    heading: "Straightforward plans. No percentage of spend.",
+    eyebrow: "Simple pricing",
+    heading: "Marketing that fits a therapist’s budget, not an agency’s.",
     intro:
-      "Pick the plan that matches the size of the practice. Everything is done for you, and every plan includes the monthly mastermind.",
-    plans: [
+      "Most agencies price for medical groups and hospitals. We built this for the solo and small practice owner who needs a steady flow of right-fit clients without a five-figure retainer.",
+    /** The two lines of the price, rendered one above the other. */
+    priceLines: [
       {
-        id: "startup",
-        name: "Startup / New Practice",
-        audience: "For clinicians launching a new practice.",
-        features: [
-          "A website that turns searches into booked intakes",
-          "Paperwork signed and payments collected without you chasing anyone: CRM with branded email, document signing and payments",
-          "Found on Psychology Today by clients who fit your specialty",
-          "A monthly room of practice owners working on what you are working on: the Grow Your Practice mastermind",
-          "An hour each quarter with someone who has run a practice, not just advised one",
-        ],
-        price: "$999 one-time setup",
-        priceNote: "then $100/month for website hosting and CRM",
-        cta: "Let's chat",
+        id: "setup",
+        amount: "$1,500",
+        unit: "one-time",
+        body: "Setup: website, automations, SEO foundation, ad accounts and Psychology Today profile.",
       },
       {
-        id: "growing",
-        name: "Growing Practice",
-        audience: "For 5–10 clinician practices and IOP/PHP clinical teams.",
-        features: [
-          "New clients to fill your caseloads: choose search or paid ads",
-          "Ads: $4.25 back for every $1 spent, guaranteed",
-          "SEO: page one of Google for the keywords you choose, guaranteed",
-          "Every clinician on the team getting found, not just the two with the best profiles",
-          "A current website that does not lose the client comparing you to three others",
-          "Nothing dropped between first inquiry and first session: follow-up, intake and internal handoffs run themselves",
-          "Two hours a month on hiring, capacity and payer mix with someone who has made those calls",
-          "A monthly room of owners at your stage",
-        ],
-        price: "Up to $5,000",
-        priceNote: "per month",
-        cta: "Let's chat",
-        featured: true,
+        id: "retainer",
+        amount: "$700",
+        unit: "per month",
+        body: "Ongoing retainer: campaigns, SEO, ads management and optimization.",
       },
-      {
-        id: "enterprise",
-        name: "Enterprise / Multi-location",
-        audience:
-          "For 20+ clinician practices, multi-location practices, 50+ IOP/PHP clients, or residential treatment centers.",
-        features: [
-          "Every location filling its own census, up to five, without competing against each other",
-          "A marketing director running the function, without the salary or the hiring risk",
-          "A rebuilt website and CRM that keep the rankings you already paid for",
-          "Four hours a month on what actually moves census: staffing, payer mix, expansion",
-          "A monthly room of operators running businesses your size",
-        ],
-        price: "Call for quote",
-        cta: "Let’s chat",
-      },
-    ] satisfies Plan[],
-    /** Rendered directly beneath the plan grid. */
-    footnote: "Ad spend is not included in any plan.",
+    ] satisfies PriceLine[],
+    reasonsHeading: "Why it works",
+    reasons: [
+      "One new weekly client covers the retainer. Everything after that is growth.",
+      "No hiring, no learning a dozen tools. We run the whole system.",
+      "You stay focused on clients. We keep the schedule full.",
+    ],
+    cta: "Let’s chat",
+    /** Rendered directly beneath the price; the lead is set in white. */
+    footnoteLead: "Ad spend is not included.",
+    footnote:
+      "You set and control your own Google or Meta ad budget, and no long-term contract is required.",
     guaranteeTermsLabel: "See guarantee terms",
     guaranteeTermsHref: "/terms#guarantees",
-    alaCarte: {
-      heading: "Custom and à la carte",
-      items: [
-        {
-          title: "Solo psychiatrists and PMHNPs",
-          body: "Single services, Ads or SEO, as needed.",
-          price: "Call for quote",
-        },
-        {
-          title: "Custom consulting packages",
-          body: "Built around the problem you are actually solving.",
-          price: "Call for quote",
-        },
-        {
-          title: "Done-for-you GOP to IOP program build",
-          body: "Full program build including curriculum.",
-          price: "$20,000",
-        },
-      ],
-    },
   },
 
   howItWorks: {
@@ -275,7 +225,7 @@ export const content = {
       {
         number: "03",
         title: "Grow",
-        body: "Campaigns go live against the guarantee, consulting hours go on the calendar, and reporting ties spend to admissions rather than impressions.",
+        body: "Campaigns go live, follow-up runs itself, and reporting ties spend to booked appointments rather than impressions. We keep optimizing month to month.",
       },
     ],
   },
@@ -298,9 +248,9 @@ export const content = {
     heading: "What practice owners ask us first.",
     items: [
       {
-        question: "Is ad spend included in the plans?",
+        question: "Is ad spend included?",
         answer:
-          "No. Ad spend is not included in any plan. Your plan fee covers strategy, build, campaign management and consulting. Media budget is paid directly to the advertising platforms, so you own the ad accounts and see exactly what was spent.",
+          "No. The retainer covers strategy, campaign management, SEO and optimization. Media budget is paid directly to Google or Meta, so you set your own budget, own the ad accounts and see exactly what was spent.",
       },
       {
         question: "How does the 4.25x return on ad spend guarantee work?",
@@ -315,7 +265,7 @@ export const content = {
       {
         question: "How long is the contract?",
         answer:
-          "There is an initial term so the guarantees have a measurement window that means something, and the agreement continues month to month after that. We do not use multi-year lock-ins. The exact term is stated plainly in your agreement before you sign anything.",
+          "The retainer runs month to month and no long-term contract is required. Where a guarantee is part of your agreement it needs a measurement window to mean anything, so that window is stated plainly before you sign. We do not use multi-year lock-ins.",
       },
       {
         question: "Is your marketing HIPAA-aware?",
@@ -323,19 +273,14 @@ export const content = {
           "We build on the assumption that anything touching a prospective patient can become protected health information. In practice that means contact forms collect contact details and never clinical detail, advertising and analytics tags are kept off patient portal and clinical pages, call tracking and CRM vendors are engaged under a business associate agreement where one is required, and no clinical information is sent to advertising platforms. We are a marketing company rather than your compliance counsel, so your privacy officer should review anything that touches patient data.",
       },
       {
-        question: "What is the monthly mastermind?",
-        answer:
-          "A monthly group call for the practice owners we work with. One topic worked through properly — pricing, payer mix, hiring, intake conversion, opening a second location — plus time for your own questions. It is included in every plan.",
-      },
-      {
         question: "Will a new website lose the SEO we already have?",
         answer:
-          "That is the risk we design against. Before anything changes we crawl and archive the existing site, map every URL to its replacement, keep the pages that are earning rankings, and put permanent redirects in place at launch. Rankings and traffic are monitored through the transition so a drop gets caught in days rather than quarters. On the enterprise plan, preserving current SEO is an explicit part of the build.",
+          "That is the risk we design against. Before anything changes we crawl and archive the existing site, map every URL to its replacement, keep the pages that are earning rankings, and put permanent redirects in place at launch. Rankings and traffic are monitored through the transition so a drop gets caught in days rather than quarters. Preserving the rankings you already have is part of the build, not an add-on.",
       },
       {
         question: "How quickly does this go live?",
         answer:
-          "A new-practice site is typically live within a few weeks of the kickoff call. Larger builds involving a CRM, automations and a site migration take longer because the migration is the part worth being careful about. Paid campaigns can start as soon as tracking is verified. Search is a compounding channel, which is why the ranking guarantee runs over the window set out in the terms.",
+          "The site is typically live within a few weeks of the kickoff call. A build that has to migrate an existing site takes longer, because the migration is the part worth being careful about. Campaigns can start as soon as tracking is verified. Search compounds, so local SEO is the slowest of the five to show its full effect.",
       },
     ],
   },

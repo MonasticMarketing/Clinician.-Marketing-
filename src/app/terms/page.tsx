@@ -123,7 +123,7 @@ export default function TermsPage() {
 
       <h2>3. Advertising spend</h2>
       <p>
-        Advertising spend is not included in any plan. It is paid by you
+        Advertising spend is not included in the retainer. It is paid by you
         directly to the advertising platforms. You own the advertising
         accounts.
       </p>
