@@ -72,17 +72,10 @@ export default function PsychologyTodayGuidePage() {
               <span key={item}>{item}</span>
             ))}
           </div>
+          {/* No booking CTA here: the page makes its case first and asks
+              once, in the band at the end of the article. This stays
+              because it is navigation, not a pitch. */}
           <div className="cta-row">
-            <a
-              className="btn"
-              href={content.scheduler.embedUrl}
-              data-booking
-              target="_blank"
-              rel="noopener"
-            >
-              {content.nav.cta.label}, book a 30-minute call
-              <span className="sr-only"> about your practice</span>
-            </a>
             <a className="btn ghost" href="#checklist">
               Skip to the checklist
             </a>
