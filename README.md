@@ -52,10 +52,14 @@ optional — the site builds and runs without any of it.
 | --- | --- |
 | `NEXT_PUBLIC_SITE_URL` | Canonical origin for metadata, sitemap and JSON-LD. Defaults to `https://clinician.marketing`. |
 | `NEXT_PUBLIC_GA_ID` | GA4 measurement ID, e.g. `G-XXXXXXXXXX`. |
-| `NEXT_PUBLIC_GTM_ID` | Google Tag Manager container ID, e.g. `GTM-XXXXXXX`. |
+| `NEXT_PUBLIC_GTM_ID` | Google Tag Manager container ID, e.g. `GTM-XXXXXXX`. Set in `.env.production`. |
 
 No analytics IDs are hardcoded anywhere. If neither `NEXT_PUBLIC_GA_ID` nor
 `NEXT_PUBLIC_GTM_ID` is set, no tracking script is emitted at all.
+
+The live site runs GTM only. **Do not also set `NEXT_PUBLIC_GA_ID`** — the
+GTM container already fires a GA4 tag, so a second gtag loader would count
+every page view twice.
 
 There is no contact form and no mail transport — booking goes through the
 scheduling dialog, so no mail credentials are required.
